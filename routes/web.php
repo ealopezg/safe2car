@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\VehicleController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::prefix('vehicle')->name('vehicle.')->group(function (){
+        Route::get('/',[VehicleController::class, 'index'])->name('index');
+        Route::get('/{id}',[VehicleController::class, 'show'])->name('show');
+        Route::get('/{id}/edit',[VehicleController::class, 'edit'])->name('edit');
+        Route::get('/create',[VehicleController::class, 'create'])->name('create');
+    });
+});
+
+
+

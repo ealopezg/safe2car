@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-
+use App\Models\Vehicle;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('vehicle.{vehicleId}', function ($user, $vehicleId) {
+    return $user->id === Vehicle::findOrNew($vehicleId)->id;
 });
