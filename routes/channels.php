@@ -17,6 +17,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('vehicle.{vehicleId}', function ($user, $vehicleId) {
-    return $user->id === Vehicle::findOrFail($vehicleId)->id;
-});
+Broadcast::channel('vehicle.{vehicleId}', function ($vehicle, $vehicleId) {
+    return $vehicle->id === Vehicle::findOrFail($vehicleId)->id;
+},['guards' => ['vehicle']]);
