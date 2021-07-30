@@ -32,9 +32,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('vehicle')->name('vehicle.')->group(function (){
         Route::get('/',[VehicleController::class, 'index'])->name('index');
+        Route::post('/',[VehicleController::class, 'store'])->name('store');
         Route::get('/{id}',[VehicleController::class, 'show'])->name('show');
+        Route::post('/{id}/action',[VehicleController::class, 'action'])->name('action');
+        Route::post('/{id}/api',[VehicleController::class, 'generateApiToken'])->name('apitoken');
         Route::get('/{id}/edit',[VehicleController::class, 'edit'])->name('edit');
-        Route::get('/create',[VehicleController::class, 'create'])->name('create');
     });
 });
 

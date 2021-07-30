@@ -18,5 +18,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('vehicle.{vehicleId}', function ($user, $vehicleId) {
-    return $user->id === Vehicle::findOrNew($vehicleId)->id;
+    return $user->id === Vehicle::findOrFail($vehicleId)->id;
 });

@@ -16,7 +16,7 @@ class CreateStatusesTable extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehicle_id')->constrained();
-            $table->morphs('statusable');
+            $table->nullableMorphs('statusable');
             $table->string('action');
             $table->string('comment')->nullable();
             $table->timestampTz('added_at', $precision = 0);

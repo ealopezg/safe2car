@@ -46,6 +46,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'vehicle' => [
+            'driver' => 'sanctum',
+            'provider' => 'vehicles',
+        ]
     ],
 
     /*
@@ -69,6 +74,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'vehicles' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vehicle::class,
         ],
 
         // 'users' => [

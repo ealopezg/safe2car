@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use CreatePhotosTable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Vehicle extends Model
+class Vehicle extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
 
     /**
@@ -27,5 +30,20 @@ class Vehicle extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('owner');
+    }
+
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
     }
 }

@@ -26,7 +26,7 @@
     <div class="max-w-screen-xl mx-auto px-6 lg:px-8 xl:px-4 grid md:grid-cols-4 xl:grid-cols-5 gap-x-12 lg:gap-x-20">
       <div class="order-2 md:order-1 col-span-2 self-center mt-12 md:mt-0">
         <h1 class="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 lg:mb-8">La mejor forma de rastrear tu vehículo</h1>
-        <p class="text-lg xl:text-xl text-gray-200 mb-6 lg:mb-8 xl:mb-10">Gps, cámara, corta corriente, todo en un mismo dispositivo</p>
+        <p class="text-lg xl:text-xl text-gray-200 mb-6 lg:mb-8 xl:mb-10">Gps, cámara, bocina repulsiva, todo en un mismo dispositivo</p>
         <div class="flex space-x-4 mb-6">
           <button class="focus:outline-none inline-block bg-gradient-to-br from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-700 font-semibold rounded-lg py-2 px-5  text-white ">Registro</button>
         </div>

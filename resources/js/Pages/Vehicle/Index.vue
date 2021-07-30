@@ -1,12 +1,18 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Mis Vehiculos
-      </h2>
+      <div class="grid grid-cols-2 justify-start">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+          Mis Vehiculos
+        </h2>
+        <jet-button @click="vehicleModal = true" class="justify-self-end">
+          Nuevo Vehículo
+        </jet-button>
+      </div>
     </template>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <p v-if="vehicles.length == 0">No hay vehículos</p>
         <div class="overflow-hidden">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div
@@ -72,29 +78,16 @@
                     :onclick="
                       'location.href=' +
                       '\'' +
-                      route('vehicle.edit', vehicle.id) +
-                      '\''
-                    "
-                    class="mt-2 mr-2"
-                  >
-                    Editar
-                  </jet-button>
-                  <jet-button
-                    type="button"
-                    :onclick="
-                      'location.href=' +
-                      '\'' +
-                      route('vehicle.edit', vehicle.id) +
+                      route('vehicle.show', vehicle.id) +
                       '\''
                     "
                     class="mt-2 mr-2"
                   >
                     Ver
                   </jet-button>
-                  <jet-secondary-button @click="actionModal = true">
-                        Acciones
-                    </jet-secondary-button>
-
+                  <jet-secondary-button @click="openActionModal(vehicle.id)">
+                    Acciones
+                  </jet-secondary-button>
                 </div>
               </div>
             </div>
@@ -105,9 +98,49 @@
         <template #title> Realizar acciones </template>
 
         <template #content>
-
-          <div class="mt-4">
-                <toggle>Corriente</toggle>
+          <div class="mt-4 grid grid-cols-1 justify-items-center">
+            <div
+              class="grid md:grid-cols-3 gap-2 grid-cols-1 justify-items-start"
+            >
+              <div>
+                <Toggle labelledby="toggle-label" v-model="toggle1" />
+                <label id="toggle-label"> Detección de movimiento</label>
+              </div>
+              <div>
+                <Toggle labelledby="toggle-label" v-model="toggle1" />
+                <label id="toggle-label"> Bocina</label>
+              </div>
+              <div>
+                <Toggle labelledby="toggle-label" v-model="toggle1" />
+                <label id="toggle-label"> Corta Corriente</label>
+              </div>
+            </div>
+            <div
+              class="
+                grid
+                md:grid-cols-3
+                mt-4
+                grid-cols-1
+                gap-4
+                justify-items-center
+              "
+            >
+              <div>
+                <jet-secondary-button @click="clickAction('photo')">
+                  Tomar fotografía
+                </jet-secondary-button>
+              </div>
+              <div>
+                <jet-secondary-button @click="clickAction('location')">
+                  Obtener Ubicación
+                </jet-secondary-button>
+              </div>
+              <div>
+                <jet-secondary-button @click="clickAction('call')">
+                  Realizar llamada
+                </jet-secondary-button>
+              </div>
+            </div>
           </div>
         </template>
 
@@ -117,6 +150,179 @@
           </jet-secondary-button>
         </template>
       </jet-dialog-modal>
+      <jet-dialog-modal :show="vehicleModal" @close="closeVehicleModal">
+
+        <template #title> Nuevo Vehículo </template>
+
+        <template #content>
+            <form @submit.prevent="submitVehicle">
+            <div class="grid grid-cols-4 gap-5 mt-4">
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="license_plate"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Patente
+                </label>
+                <input
+                  type="text"
+                  name="license_playe"
+                  id="license_plate"
+                  v-model="newVehicle.license_plate"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="AAAA32"
+                />
+              </div>
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="vin"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Chasis
+                </label>
+                <input
+                  type="text"
+                  name="vin"
+                  id="vin"
+                  v-model="newVehicle.vin"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="88888888"
+                />
+              </div>
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="make"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Marca
+                </label>
+                <input
+                  type="text"
+                  name="make"
+                  id="make"
+                  v-model="newVehicle.make"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="HYUNDAI"
+                />
+              </div>
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="model"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Modelo
+                </label>
+                <input
+                  type="text"
+                  name="model"
+                  id="model"
+                  v-model="newVehicle.model"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="ACCENT"
+                />
+              </div>
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="year"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Year
+                </label>
+                <input
+                  type="text"
+                  name="year"
+                  id="year"
+                  v-model="newVehicle.year"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="2021"
+                />
+              </div>
+              <div class="col-span-3 sm:col-span-2">
+                <label
+                  for="color"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Color
+                </label>
+                <input
+                  type="text"
+                  name="color"
+                  id="color"
+                  v-model="newVehicle.color"
+                  class="
+                    focus:ring-indigo-500
+                    focus:border-indigo-500
+                    flex-1
+                    block
+                    w-full
+                    rounded-md
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="Blanco"
+                />
+              </div>
+              <jet-secondary-button @click="closeVehicleModal">
+            Cancelar
+          </jet-secondary-button>
+          <jet-button class="ml-4">
+            Guardar
+          </jet-button>
+            </div>
+             </form>
+        </template>
+
+        <template #footer>
+
+        </template>
+
+      </jet-dialog-modal>
+      <loading v-model:active="isLoading" :is-full-page="true" />
     </div>
   </app-layout>
 </template>
@@ -126,9 +332,11 @@ import AppLayout from "@/Layouts/AppLayout";
 import JetDialogModal from "@/Jetstream/DialogModal";
 import JetButton from "@/Jetstream/Button";
 import Welcome from "@/Jetstream/Welcome";
-import JetSecondaryButton from '@/Jetstream/SecondaryButton';
-import Toggle from '@/Components/Toggle'
-
+import JetSecondaryButton from "@/Jetstream/SecondaryButton";
+import Toggle from "@vueform/toggle";
+import JetActionMessage from "@/Jetstream/ActionMessage";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   components: {
     AppLayout,
@@ -136,6 +344,8 @@ export default {
     JetSecondaryButton,
     JetDialogModal,
     Toggle,
+    Loading,
+    JetActionMessage,
   },
   props: {
     vehicles: Object,
@@ -143,12 +353,54 @@ export default {
   data() {
     return {
       actionModal: false,
+      vehicleModal: false,
+      toggle1: false,
+      isLoading: false,
+      vehicle_id: null,
+      newVehicle: this.$inertia.form({
+        license_plate: "",
+        vin: "",
+        make: "",
+        model: "",
+        year: "",
+        color: "",
+      }),
     };
   },
   methods: {
     closeActionModal() {
-      this.actionModal = false;
+        this.actionModal = false;
+    },
+    closeVehicleModal() {
+        this.vehicle_id = null;
+        this.vehicleModal = false;
+    },
+    openActionModal(vehicle_id){
+        this.vehicle_id = vehicle_id;
+        this.actionModal = true;
+    },
+    submitVehicle() {
+        this.isLoading = true;
+      this.newVehicle.post(this.route('vehicle.store'), {
+            onFinish: () => {
+                this.newVehicle.reset('license_plate','vin','make','model','year','color');
+                this.isLoading = false;
+                this.closeVehicleModal();
+                },
+        })
+    },
+    clickAction(action) {
+      this.isLoading = true;
+      this.$inertia.post('vehicle/'+this.vehicle_id+'/action',{action},{
+          onFinish: () => {
+              console.log("Se ha enviado la accion");
+              this.isLoading = false;
+          }
+      }
+      );
     },
   },
 };
 </script>
+
+<style src="@vueform/toggle/themes/default.css"></style>
