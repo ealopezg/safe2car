@@ -166,7 +166,7 @@ class VehicleController extends Controller
             'action' => ['required']
         ]);
         if($validated['action'] == 'call'){
-            $validated['args'] = json_encode(array('phone' => $request->user()->phone));
+            $validated['args'] = array('phone' => $request->user()->phone);
         }
         $validated['added_at'] = now();
         $status = new \App\Models\Status($validated);

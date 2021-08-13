@@ -16,6 +16,10 @@ class Status extends Model
         'added_at'
     ];
 
+    protected $casts = [
+        'args' => 'array',
+    ];
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
