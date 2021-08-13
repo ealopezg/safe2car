@@ -18,7 +18,7 @@
             </div>
             <div class="mt-4">
                 <jet-label for="phone" value="Teléfono" />
-                <jet-input id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autocomplete="phone"/>
+                <jet-input-prepend id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autocomplete="phone" prepend="+569" placeholder="99999999 "/>
             </div>
 
             <div class="mt-4">
@@ -61,6 +61,7 @@
     import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
     import JetButton from '@/Jetstream/Button'
     import JetInput from '@/Jetstream/Input'
+    import JetInputPrepend from '@/Jetstream/InputPrepend'
     import JetCheckbox from "@/Jetstream/Checkbox";
     import JetLabel from '@/Jetstream/Label'
     import JetValidationErrors from '@/Jetstream/ValidationErrors'
@@ -73,7 +74,8 @@
             JetInput,
             JetCheckbox,
             JetLabel,
-            JetValidationErrors
+            JetValidationErrors,
+            JetInputPrepend
         },
 
         data() {

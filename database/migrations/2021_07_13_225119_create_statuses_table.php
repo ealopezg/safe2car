@@ -19,6 +19,7 @@ class CreateStatusesTable extends Migration
             $table->nullableMorphs('statusable');
             $table->string('action');
             $table->string('comment')->nullable();
+            $table->string('args')->nullable();
             $table->timestampTz('added_at', $precision = 0);
             $table->timestamps();
         });

@@ -1498,11 +1498,6 @@ select {
 	margin-right: calc(1.5rem * var(--tw-space-x-reverse));
 	margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-	--tw-space-x-reverse: 0;
-	margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-	margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .divide-y > :not([hidden]) ~ :not([hidden]) {
 	--tw-divide-y-reverse: 0;
 	border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
@@ -1547,6 +1542,9 @@ select {
 .rounded-full {
 	border-radius: 9999px;
 }
+.rounded-none {
+	border-radius: 0px;
+}
 .rounded-l-md {
 	border-top-left-radius: 0.375rem;
 	border-bottom-left-radius: 0.375rem;
@@ -1583,6 +1581,9 @@ select {
 }
 .border-r {
 	border-right-width: 1px;
+}
+.border-r-0 {
+	border-right-width: 0px;
 }
 .border-gray-300 {
 	--tw-border-opacity: 1;
@@ -2106,10 +2107,6 @@ select {
 .hover\:text-white:hover {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
-}
-.hover\:text-gray-200:hover {
-	--tw-text-opacity: 1;
-	color: rgba(229, 231, 235, var(--tw-text-opacity));
 }
 .hover\:text-indigo-900:hover {
 	--tw-text-opacity: 1;

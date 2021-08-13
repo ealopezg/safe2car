@@ -98,7 +98,7 @@ class VehicleController extends Controller
                     return [
                         'id' => $location->id,
                         'lat' => $location->latitude,
-                        'long' => $location->longitude,
+                        'lng' => $location->longitude,
                         'added_at' => $location->added_at
                     ];
                 }),
@@ -165,6 +165,9 @@ class VehicleController extends Controller
         $validated = $request->validate([
             'action' => ['required']
         ]);
+        if($validated['action'] == 'call'){
+            $validated['args'] = json_encode(array('phone' => $request->user()->phone));
+        }
         $validated['added_at'] = now();
         $status = new \App\Models\Status($validated);
         $status->vehicle()->associate($vehicle);
@@ -175,6 +178,6 @@ class VehicleController extends Controller
     public function generateApiToken($id,Request $request){
         $vehicle = $request->user()->vehicles()->where('vehicle_id',$id)->firstOrFail();
         $token = $vehicle->createToken('device')->plainTextToken;
-        return response($token,200);
+        return $token;
     }
 }

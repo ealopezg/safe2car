@@ -72,8 +72,11 @@
                   </dd>
                 </div>
                 <div class="bg-gray-50 px-4 py-5 sm:gap-4 sm:px-6">
-                  <jet-secondary-button> Acciones </jet-secondary-button>
-                  <jet-secondary-button @click="generateToken()"> Token </jet-secondary-button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <jet-secondary-button> Acciones </jet-secondary-button>
+                        <jet-secondary-button @click="generateToken()"> Token </jet-secondary-button>
+                    </div>
+
                 </div>
               </dl>
             </div>
@@ -82,20 +85,15 @@
             <l-map
               v-model="zoom"
               v-model:zoom="zoom"
-              :center="[-33.368335929676135, -70.66712776934384]"
-              @move="log('move')"
+              :center="vehicle.locations.length > 0 ? [vehicle.locations[0].lat,vehicle.locations[0].lng] : [-33.368335929676135, -70.66712776934384]"
+               style="z-index: 0;"
             >
               <l-tile-layer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                :attribution="attribution"
               ></l-tile-layer>
-              <l-marker :lat-lng="[-33.368335929676135, -70.66712776934384]">
-                <l-tooltip>17-2-2021 21:20hrs </l-tooltip>
-              </l-marker>
-              <l-marker :lat-lng="[-33.502199747005, -70.64762017094242]">
-                <l-tooltip>17-2-2021 21:20hrs</l-tooltip>
-              </l-marker>
-              <l-marker :lat-lng="[-33.46391696688348, -70.65947194457104]">
-                <l-tooltip>17-2-2021 21:20hrs</l-tooltip>
+              <l-marker v-for="location,index in vehicle.locations" v-bind:key="index" :lat-lng="[location.lat, location.lng]">
+                <l-tooltip>{{location.added_at}}</l-tooltip>
               </l-marker>
             </l-map>
           </div>
@@ -127,11 +125,14 @@
               </div>
               <section class="py-8 px-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 -mx-4 -mb-8">
+                    <div  @click="this.photoModal = true">
                   <img
+
                     class="rounded shadow-md"
                     src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
                     alt=""
                   />
+                    </div>
                   <img
                     class="rounded shadow-md"
                     src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
@@ -275,6 +276,41 @@
         </div>
       </div>
     </div>
+    <jet-dialog-modal :show="tokenModal" @close="this.tokenModal = false">
+        <template #title> Token Generado </template>
+
+        <template #content>
+            <h1>Utilice el siguiente token y configurelo en el config.ini del raspberry</h1>
+            {{ token }}
+        </template>
+
+        <template #footer>
+          <jet-secondary-button @click="this.tokenModal = false">
+            Cerrar
+          </jet-secondary-button>
+        </template>
+      </jet-dialog-modal>
+    <jet-dialog-modal :show="photoModal" @close="this.photoModal = false">
+        <template #title>Imagen </template>
+
+        <template #content>
+
+            <img
+            class="rounded shadow-md"
+            :src="photoModalImage"
+            alt=""
+            />
+        </template>
+
+        <template #footer>
+            <jet-secondary-button @click.prevent="downloadImage" class="mt-2 mr-2">
+            Descargar
+          </jet-secondary-button>
+          <jet-secondary-button @click="this.photoModal = false">
+            Cerrar
+          </jet-secondary-button>
+        </template>
+      </jet-dialog-modal>
   </app-layout>
 </template>
 
@@ -290,6 +326,7 @@ import {
   LPolyline,
   LPolygon,
   LRectangle,
+  LControlAttribution,
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 import AppLayout from "@/Layouts/AppLayout";
@@ -298,7 +335,7 @@ import JetButton from "@/Jetstream/Button";
 import Welcome from "@/Jetstream/Welcome";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 import Toggle from "@/Components/Toggle";
-
+import axios from 'axios';
 export default {
   components: {
     AppLayout,
@@ -316,6 +353,7 @@ export default {
     LPolyline,
     LPolygon,
     LRectangle,
+    LControlAttribution
   },
   props: {
     vehicle: Object,
@@ -323,9 +361,14 @@ export default {
   data() {
     return {
       actionModal: false,
+      tokenModal: false,
+      token: "",
       zoom: 10,
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       iconWidth: 25,
       iconHeight: 40,
+      photoModal: false,
+      photoModalImage: "https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80",
       history: [
         {
           date: "17-2-2021 21:20hrs",
@@ -362,13 +405,17 @@ export default {
     closeActionModal() {
       this.actionModal = false;
     },
+    downloadImage(){
+        window.open(this.photoModalImage+'.jpg', '_blank')
+    },
     generateToken(){
-        this.$inertia.post(this.vehicle.id+'/api',{
-          onSuccess: (page) => {
-              console.log(page);
-              this.isLoading = false;
-          }
-      });
+        this.isLoading = true;
+
+        axios.post(this.vehicle.id+'/api').then((response) => {
+           this.token = response.data;
+           this.tokenModal = true;
+           this.isLoading = false;
+        })
     },
     log(a) {
       console.log(a);
