@@ -22643,7 +22643,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/ActionMessage */ "./resources/js/Jetstream/ActionMessage.vue");
 /* harmony import */ var vue_loading_overlay__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-loading-overlay */ "./node_modules/vue-loading-overlay/dist/vue-loading.min.js");
 /* harmony import */ var vue_loading_overlay__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_loading_overlay__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var vue_loading_overlay_dist_vue_loading_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-loading-overlay/dist/vue-loading.css */ "./node_modules/vue-loading-overlay/dist/vue-loading.css");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var vue_loading_overlay_dist_vue_loading_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-loading-overlay/dist/vue-loading.css */ "./node_modules/vue-loading-overlay/dist/vue-loading.css");
+
 
 
 
@@ -22670,7 +22673,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       actionModal: false,
       vehicleModal: false,
-      toggle1: false,
+      system: false,
+      buzzer: false,
+      power_cut_off: false,
       isLoading: false,
       vehicle_id: null,
       newVehicle: this.$inertia.form({
@@ -22712,14 +22717,18 @@ __webpack_require__.r(__webpack_exports__);
     clickAction: function clickAction(action) {
       var _this2 = this;
 
+      var toggle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var toggleValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+      if (toggle) {
+        action = action + '_' + (toggleValue ? 'activate' : 'desactivate');
+      }
+
       this.isLoading = true;
-      this.$inertia.post('vehicle/' + this.vehicle_id + '/action', {
+      axios__WEBPACK_IMPORTED_MODULE_8___default().post('vehicle/' + this.vehicle_id + '/action', {
         action: action
-      }, {
-        onFinish: function onFinish() {
-          console.log("Se ha enviado la accion");
-          _this2.isLoading = false;
-        }
+      }).then(function (response) {
+        _this2.isLoading = false;
       });
     }
   }
@@ -27497,7 +27506,7 @@ var _hoisted_21 = {
 
 var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
   id: "toggle-label"
-}, " Detección de movimiento", -1
+}, " Sistema", -1
 /* HOISTED */
 );
 
@@ -27685,30 +27694,39 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toggle, {
             labelledby: "toggle-label",
-            modelValue: $data.toggle1,
+            modelValue: $data.system,
             "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-              return $data.toggle1 = $event;
+              return $data.system = $event;
+            }),
+            onChange: _cache[3] || (_cache[3] = function ($event) {
+              return $options.clickAction('system', true, $data.system);
             })
           }, null, 8
           /* PROPS */
           , ["modelValue"]), _hoisted_22]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toggle, {
             labelledby: "toggle-label",
-            modelValue: $data.toggle1,
-            "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-              return $data.toggle1 = $event;
+            modelValue: $data.buzzer,
+            "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+              return $data.buzzer = $event;
+            }),
+            onChange: _cache[5] || (_cache[5] = function ($event) {
+              return $options.clickAction('buzzer', true, $data.buzzer);
             })
           }, null, 8
           /* PROPS */
           , ["modelValue"]), _hoisted_23]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toggle, {
             labelledby: "toggle-label",
-            modelValue: $data.toggle1,
-            "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-              return $data.toggle1 = $event;
+            modelValue: $data.power_cut_off,
+            "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+              return $data.power_cut_off = $event;
+            }),
+            onChange: _cache[7] || (_cache[7] = function ($event) {
+              return $options.clickAction('power_cut_off', true, $data.power_cut_off);
             })
           }, null, 8
           /* PROPS */
           , ["modelValue"]), _hoisted_24])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-            onClick: _cache[5] || (_cache[5] = function ($event) {
+            onClick: _cache[8] || (_cache[8] = function ($event) {
               return $options.clickAction('photo');
             })
           }, {
@@ -27719,7 +27737,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             /* STABLE */
 
           })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-            onClick: _cache[6] || (_cache[6] = function ($event) {
+            onClick: _cache[9] || (_cache[9] = function ($event) {
               return $options.clickAction('location');
             })
           }, {
@@ -27730,7 +27748,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             /* STABLE */
 
           })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-            onClick: _cache[7] || (_cache[7] = function ($event) {
+            onClick: _cache[10] || (_cache[10] = function ($event) {
               return $options.clickAction('call');
             })
           }, {
@@ -27770,14 +27788,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-            onSubmit: _cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+            onSubmit: _cache[17] || (_cache[17] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
               return $options.submitVehicle && $options.submitVehicle.apply($options, arguments);
             }, ["prevent"]))
           }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_32, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
             type: "text",
             name: "license_playe",
             id: "license_plate",
-            "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+            "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
               return $data.newVehicle.license_plate = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27788,7 +27806,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             name: "vin",
             id: "vin",
-            "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+            "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
               return $data.newVehicle.vin = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27799,7 +27817,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             name: "make",
             id: "make",
-            "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+            "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
               return $data.newVehicle.make = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27810,7 +27828,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             name: "model",
             id: "model",
-            "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+            "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
               return $data.newVehicle.model = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27821,7 +27839,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             name: "year",
             id: "year",
-            "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+            "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
               return $data.newVehicle.year = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27832,7 +27850,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             name: "color",
             id: "color",
-            "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+            "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
               return $data.newVehicle.color = $event;
             }),
             "class": "\n                    focus:ring-indigo-500\n                    focus:border-indigo-500\n                    flex-1\n                    block\n                    w-full\n                    rounded-md\n                    sm:text-sm\n                    border-gray-300\n                  ",
@@ -27873,7 +27891,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["show", "onClose"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_loading, {
         active: $data.isLoading,
-        "onUpdate:active": _cache[15] || (_cache[15] = function ($event) {
+        "onUpdate:active": _cache[18] || (_cache[18] = function ($event) {
           return $data.isLoading = $event;
         }),
         "is-full-page": true

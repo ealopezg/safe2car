@@ -24,7 +24,7 @@ class Vehicle extends Authenticatable
         'make',
         'model',
         'year',
-        'color',
+        'color'
     ];
 
     public function users()

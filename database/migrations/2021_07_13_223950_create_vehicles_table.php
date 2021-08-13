@@ -21,6 +21,10 @@ class CreateVehiclesTable extends Migration
             $table->string('model');
             $table->string('year');
             $table->string('color');
+            $table->boolean('system')->default(false);
+            $table->boolean('buzzer')->default(false);
+            $table->boolean('cut_off_power')->default(false);
+            $table->timestamp('last_connected')->nullable();
             $table->timestamps();
         });
     }

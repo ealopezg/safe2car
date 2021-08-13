@@ -20,7 +20,9 @@ class CreateStatusesTable extends Migration
             $table->string('action');
             $table->string('comment')->nullable();
             $table->string('args')->nullable();
-            $table->timestampTz('added_at', $precision = 0);
+            $table->boolean('received_ok')->default(false);
+            $table->boolean('received_response')->nullable();
+            $table->timestamp('added_at');
             $table->timestamps();
         });
     }

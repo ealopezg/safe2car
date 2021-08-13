@@ -103,15 +103,15 @@
               class="grid md:grid-cols-3 gap-2 grid-cols-1 justify-items-start"
             >
               <div>
-                <Toggle labelledby="toggle-label" v-model="toggle1" />
-                <label id="toggle-label"> Detección de movimiento</label>
+                <Toggle labelledby="toggle-label" v-model="system" @change="clickAction('system',true,system)"/>
+                <label id="toggle-label"> Sistema</label>
               </div>
               <div>
-                <Toggle labelledby="toggle-label" v-model="toggle1" />
+                <Toggle labelledby="toggle-label" v-model="buzzer" @change="clickAction('buzzer',true,buzzer)"/>
                 <label id="toggle-label"> Bocina</label>
               </div>
               <div>
-                <Toggle labelledby="toggle-label" v-model="toggle1" />
+                <Toggle labelledby="toggle-label" v-model="power_cut_off" @change="clickAction('power_cut_off',true,power_cut_off)"/>
                 <label id="toggle-label"> Corta Corriente</label>
               </div>
             </div>
@@ -336,6 +336,7 @@ import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 import Toggle from "@vueform/toggle";
 import JetActionMessage from "@/Jetstream/ActionMessage";
 import Loading from "vue-loading-overlay";
+import axios from 'axios';
 import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   components: {
@@ -354,7 +355,9 @@ export default {
     return {
       actionModal: false,
       vehicleModal: false,
-      toggle1: false,
+      system: false,
+      buzzer: false,
+      power_cut_off: false,
       isLoading: false,
       vehicle_id: null,
       newVehicle: this.$inertia.form({
@@ -389,15 +392,15 @@ export default {
                 },
         })
     },
-    clickAction(action) {
-      this.isLoading = true;
-      this.$inertia.post('vehicle/'+this.vehicle_id+'/action',{action},{
-          onFinish: () => {
-              console.log("Se ha enviado la accion");
-              this.isLoading = false;
-          }
-      }
-      );
+    clickAction(action,toggle=false,toggleValue = null) {
+        if(toggle){
+            action = action + '_' + (toggleValue ? 'activate' : 'desactivate');
+        }
+        this.isLoading = true;
+        axios.post('vehicle/'+this.vehicle_id+'/action',{action}).then((response) => {
+           this.isLoading = false;
+        })
+
     },
   },
 };

@@ -173,6 +173,7 @@ class VehicleController extends Controller
         $status->vehicle()->associate($vehicle);
         $status->save();
         event(new \App\Events\StatusSended($status));
+        return $status;
     }
 
     public function generateApiToken($id,Request $request){
