@@ -11,6 +11,8 @@ class Status extends Model
 
     protected $fillable = [
         'action',
+        'comment',
+        'args',
         'added_at'
     ];
 
