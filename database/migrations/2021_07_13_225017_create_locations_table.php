@@ -18,7 +18,7 @@ class CreateLocationsTable extends Migration
             $table->foreignId('vehicle_id')->constrained();
             $table->float('latitude');
             $table->float('longitude');
-            $table->timestampTz('added_at', $precision = 0);
+            $table->timestamp('added_at');
             $table->timestamps();
         });
     }

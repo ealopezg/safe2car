@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VehicleDeviceController extends Controller
 {
@@ -34,12 +35,51 @@ class VehicleDeviceController extends Controller
         return response('OK');
     }
 
-    public function res(Request $request){
+    public function action(Request $request){
         $validated = $request->validate([
             'id' => ['required'],
             'action' => ['required'],
             'added_at' => ['required','date'],
             'args' => ['required','array']
         ]);
+        $vehicle = $request->user();
+        $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
+        switch ($validated['action']) {
+            case 'OK':
+                $status->received_ok = true;
+                $status->save();
+            case 'photo':
+                $photo = new \App\Models\Photo;
+                $photo->added_at = \Carbon\Carbon::parse($validated['added_at']);
+                $path = $vehicle->id.'_'.$photo->added_at->format('YmdHis').'.jpg';
+                $contents = $validated['args']['body'];
+                Storage::put($path,$contents);
+                $photo->path = $path;
+                $photo->vehicle()->associate($vehicle);
+                $photo->save();
+                $status->statusable()->associate($photo);
+                $status->received_response = true;
+                $status->save();
+                break;
+
+            case 'location':
+                $location = new \App\Models\Location([
+                    'latitude' => $validated['args']['lat'],
+                    'longitude' => $validated['args']['long'],
+                    'added_at' => $validated['args']['added_at'],
+                ]);
+                $location->vehicle()->associate($vehicle);
+                $location->save();
+                $status->statusable()->associate($location);
+                $status->received_response = true;
+                $status->save();
+                break;
+            default:
+                # code...
+                break;
+        }
+        return response('OK');
+
+
     }
 }

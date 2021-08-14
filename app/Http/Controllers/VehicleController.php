@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 use App\Events\StatusSended;
 class VehicleController extends Controller
@@ -87,10 +88,10 @@ class VehicleController extends Controller
                 'year' => $vehicle->year,
                 'color' => $vehicle->color,
                 'owner' => $vehicle->pivot->owner,
-                'photos' => $vehicle->photos->map(function ($photo){
+                'photos' => $vehicle->photos->map(function ($photo) use ($vehicle){
                     return [
                         'id' => $photo->id,
-                        'data' => $photo->data,
+                        'url' =>  route('vehicle.downloadPhoto', ['id' => $vehicle->id,'photo_id' => $photo->id]),
                         'added_at' => $photo->added_at,
                     ];
                 }),
@@ -180,5 +181,11 @@ class VehicleController extends Controller
         $vehicle = $request->user()->vehicles()->where('vehicle_id',$id)->firstOrFail();
         $token = $vehicle->createToken('device')->plainTextToken;
         return $token;
+    }
+
+    public function downloadPhoto($id,$photo_id,Request $request){
+        $vehicle = $request->user()->vehicles()->where('vehicle_id',$id)->firstOrFail();
+        $photo = $vehicle->photos()->where('id',$photo_id)->firstOrFail();
+        return Storage::download($photo->path);
     }
 }

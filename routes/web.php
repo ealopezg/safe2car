@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/{id}/action',[VehicleController::class, 'action'])->name('action');
         Route::post('/{id}/api',[VehicleController::class, 'generateApiToken'])->name('apitoken');
         Route::get('/{id}/edit',[VehicleController::class, 'edit'])->name('edit');
+        Route::get('/{id}/photo/{photo_id}',[VehicleController::class, 'downloadPhoto'])->name('downloadPhoto');
     });
 });
 

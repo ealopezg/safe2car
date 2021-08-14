@@ -17,7 +17,7 @@ class CreatePhotosTable extends Migration
             $table->id();
             $table->foreignId('vehicle_id')->constrained();
             $table->string('path');
-            $table->timestampTz('added_at', $precision = 0);
+            $table->timestamp('added_at');
             $table->timestamps();
         });
     }

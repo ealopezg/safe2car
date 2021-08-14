@@ -125,34 +125,14 @@
               </div>
               <section class="py-8 px-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 -mx-4 -mb-8">
-                    <div  @click="this.photoModal = true">
-                  <img
+                    <div  v-for="photo,index in vehicle.photos" v-bind:key="index" @click="this.photoModal = true; this.photoModalImage = photo">
+                        <img
 
-                    class="rounded shadow-md"
-                    src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                    alt=""
-                  />
+                            class="rounded shadow-md"
+                            :src="photo.url"
+                            alt=""
+                        />
                     </div>
-                  <img
-                    class="rounded shadow-md"
-                    src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                    alt=""
-                  />
-                  <img
-                    class="rounded shadow-md"
-                    src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                    alt=""
-                  />
-                  <img
-                    class="rounded shadow-md"
-                    src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                    alt=""
-                  />
-                  <img
-                    class="rounded shadow-md"
-                    src="https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-                    alt=""
-                  />
                 </div>
               </section>
             </div>
@@ -291,13 +271,13 @@
         </template>
       </jet-dialog-modal>
     <jet-dialog-modal :show="photoModal" @close="this.photoModal = false">
-        <template #title>Imagen </template>
+        <template #title>Imagen - Fecha: {{photoModalImage.added_at}}</template>
 
         <template #content>
 
             <img
             class="rounded shadow-md"
-            :src="photoModalImage"
+            :src="photoModalImage.url"
             alt=""
             />
         </template>
@@ -368,7 +348,11 @@ export default {
       iconWidth: 25,
       iconHeight: 40,
       photoModal: false,
-      photoModalImage: "https://images.unsplash.com/photo-1471174617910-3e9c04f58ff5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwaW50ZXJpb3J8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80",
+      photoModalImage: {
+          id: '',
+          url: null,
+          added_at: null,
+      },
       history: [
         {
           date: "17-2-2021 21:20hrs",
@@ -406,7 +390,7 @@ export default {
       this.actionModal = false;
     },
     downloadImage(){
-        window.open(this.photoModalImage+'.jpg', '_blank')
+        window.open(this.photoModalImage.url, '_blank')
     },
     generateToken(){
         this.isLoading = true;
