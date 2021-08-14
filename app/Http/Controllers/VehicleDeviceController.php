@@ -40,7 +40,7 @@ class VehicleDeviceController extends Controller
             'id' => ['required'],
             'action' => ['required'],
             'added_at' => ['required','date'],
-            'args' => ['required','array']
+            'args' => ['sometimes','array']
         ]);
         $vehicle = $request->user();
         $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
@@ -48,6 +48,7 @@ class VehicleDeviceController extends Controller
             case 'OK':
                 $status->received_ok = true;
                 $status->save();
+                break;
             case 'photo':
                 $photo = new \App\Models\Photo;
                 $photo->added_at = \Carbon\Carbon::parse($validated['added_at']);
