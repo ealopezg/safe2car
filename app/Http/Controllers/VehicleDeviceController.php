@@ -67,7 +67,7 @@ class VehicleDeviceController extends Controller
                 $location = new \App\Models\Location([
                     'latitude' => $validated['args']['lat'],
                     'longitude' => $validated['args']['long'],
-                    'added_at' => $validated['args']['added_at'],
+                    'added_at' => $validated['added_at'],
                 ]);
                 $location->vehicle()->associate($vehicle);
                 $location->save();
