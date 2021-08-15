@@ -53,7 +53,7 @@ class VehicleDeviceController extends Controller
                 $photo = new \App\Models\Photo;
                 $photo->added_at = \Carbon\Carbon::parse($validated['added_at']);
                 $path = $vehicle->id.'_'.$photo->added_at->format('YmdHis').'.jpg';
-                $contents = $validated['args']['body'];
+                $contents = base64_decode($validated['args']['body']);
                 Storage::put($path,$contents);
                 $photo->path = $path;
                 $photo->vehicle()->associate($vehicle);
