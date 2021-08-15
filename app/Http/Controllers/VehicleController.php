@@ -103,12 +103,33 @@ class VehicleController extends Controller
                         'added_at' => $location->added_at
                     ];
                 }),
-                'statuses' => $vehicle->statuses->map(function ($status){
+                'statuses' => $vehicle->statuses->map(function ($status) use ($vehicle){
+                    $statusable = [];
+                    if($status->statusable){
+                        if($status->statusable_type = "App\Models\Location"){
+                            $statusable = [
+                                'lat' => $status->statusable->latitude,
+                                'lng' => $status->statusable->longitude
+                            ];
+                        }
+                        else if($status->statusable_type = "App\Models\Photo"){
+                            $statusable = [
+                                'id' => $status->statusable->id,
+                                'url' =>  route('vehicle.downloadPhoto', ['id' => $vehicle->id,'photo_id' => $status->statusable->id]),
+                                'added_at' => $status->statusable->added_at,
+                            ];
+                        }
+                    }
+
                     return [
                         'id' => $status->id,
                         'action' => $status->action,
                         'comment' => $status->comment,
-                        'added_at' => $status->added_at
+                        'added_at' => $status->added_at,
+                        'args' => $status->args,
+                        'received_ok' => $status->received_ok,
+                        'received_response' => $status->received_response,
+                        'statusable' => $statusable
                     ];
                 }),
             ]

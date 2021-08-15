@@ -20,6 +20,8 @@ class Location extends Model
         'added_at'
     ];
 
+    protected $visible = ['latitude', 'longitude'];
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);

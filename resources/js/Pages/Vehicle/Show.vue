@@ -83,6 +83,7 @@
           </div>
           <div class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg">
             <l-map
+              ref="theMap"
               v-model="zoom"
               v-model:zoom="zoom"
               :center="vehicle.locations.length > 0 ? [vehicle.locations[0].lat,vehicle.locations[0].lng] : [-33.368335929676135, -70.66712776934384]"
@@ -224,7 +225,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                               <div class="text-sm text-gray-900">
-                                {{ h.action }} - {{ h.comment }}
+                                {{ generateDescription(h)}}
                               </div>
                             </td>
                             <td
@@ -236,8 +237,14 @@
                                 font-medium
                               "
                             >
-                              <a
-                                href="#"
+                            <span v-if="h.received_ok">✓</span><span v-if="h.received_response">✓</span>
+                              <a v-if="h.action == 'photo' && h.received_response"
+                                @click="showImage(h)"
+                                class="text-indigo-600 hover:text-indigo-900"
+                                >Ver</a
+                              >
+                              <a v-if="h.action == 'location' && h.received_response"
+                                @click="centerMap(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
                                 >Ver</a
                               >
@@ -316,6 +323,7 @@ import Welcome from "@/Jetstream/Welcome";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 import Toggle from "@/Components/Toggle";
 import axios from 'axios';
+
 export default {
   components: {
     AppLayout,
@@ -340,6 +348,35 @@ export default {
   },
   data() {
     return {
+        actions: {
+            'photo': {
+                display: "Foto capturada",
+            },
+            'location': {
+                display: "Ubicación obtenida",
+            },
+            'call': {
+                display: "Llamada realizada",
+            },
+            'system_activate': {
+                display: "Sistema activado"
+            },
+            'system_deactivate': {
+                display: "Sistema desactivado"
+            },
+            'buzzer_activate': {
+                display: "Bocina activada"
+            },
+            'buzzer_deactivate': {
+                display: "Bocina desactivada"
+            },
+            'power_cut_off_activate': {
+                display: "Corta corriente activado"
+            },
+            'power_cut_off_deactivate': {
+                display: "Corta corriente desactivado"
+            }
+        },
       actionModal: false,
       tokenModal: false,
       token: "",
@@ -410,6 +447,20 @@ export default {
         this.iconWidth = Math.floor(this.iconHeight / 2);
       }
     },
+    generateDescription(status){
+        var display = this.actions[status.action].display;
+        if(status.action == 'call'){
+            display = display + ' al '+status.args.phone
+        }
+        return display;
+    },
+    centerMap(status){
+        this.$refs.theMap.leafletObject.panTo([status.statusable.lat,status.statusable.lng]);
+    },
+    showImage(status){
+        this.photoModal = true;
+        this.photoModalImage = status.statusable;
+    }
   },
 };
 </script>

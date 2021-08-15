@@ -394,7 +394,7 @@ export default {
     },
     clickAction(action,toggle=false,toggleValue = null) {
         if(toggle){
-            action = action + '_' + (toggleValue ? 'activate' : 'desactivate');
+            action = action + '_' + (toggleValue ? 'activate' : 'deactivate');
         }
         this.isLoading = true;
         axios.post('vehicle/'+this.vehicle_id+'/action',{action}).then((response) => {

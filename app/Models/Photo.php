@@ -19,6 +19,9 @@ class Photo extends Model
         'added_at'
     ];
 
+
+    protected $visible = ['id'];
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);

@@ -22721,7 +22721,7 @@ __webpack_require__.r(__webpack_exports__);
       var toggleValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
       if (toggle) {
-        action = action + '_' + (toggleValue ? 'activate' : 'desactivate');
+        action = action + '_' + (toggleValue ? 'activate' : 'deactivate');
       }
 
       this.isLoading = true;
@@ -22790,6 +22790,35 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      actions: {
+        'photo': {
+          display: "Foto capturada"
+        },
+        'location': {
+          display: "Ubicación obtenida"
+        },
+        'call': {
+          display: "Llamada realizada"
+        },
+        'system_activate': {
+          display: "Sistema activado"
+        },
+        'system_deactivate': {
+          display: "Sistema desactivado"
+        },
+        'buzzer_activate': {
+          display: "Bocina activada"
+        },
+        'buzzer_deactivate': {
+          display: "Bocina desactivada"
+        },
+        'power_cut_off_activate': {
+          display: "Corta corriente activado"
+        },
+        'power_cut_off_deactivate': {
+          display: "Corta corriente desactivado"
+        }
+      },
       actionModal: false,
       tokenModal: false,
       token: "",
@@ -22855,6 +22884,22 @@ __webpack_require__.r(__webpack_exports__);
       if (this.iconWidth > this.iconHeight) {
         this.iconWidth = Math.floor(this.iconHeight / 2);
       }
+    },
+    generateDescription: function generateDescription(status) {
+      var display = this.actions[status.action].display;
+
+      if (status.action == 'call') {
+        display = display + ' al ' + status.args.phone;
+      }
+
+      return display;
+    },
+    centerMap: function centerMap(status) {
+      this.$refs.theMap.leafletObject.panTo([status.statusable.lat, status.statusable.lng]);
+    },
+    showImage: function showImage(status) {
+      this.photoModal = true;
+      this.photoModalImage = status.statusable;
     }
   }
 });
@@ -28124,27 +28169,27 @@ var _hoisted_42 = {
 var _hoisted_43 = {
   "class": "text-sm text-gray-900"
 };
-
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", {
+var _hoisted_44 = {
   "class": "\n                                px-6\n                                py-4\n                                whitespace-nowrap\n                                text-right text-sm\n                                font-medium\n                              "
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
-  href: "#",
-  "class": "text-indigo-600 hover:text-indigo-900"
-}, "Ver")], -1
+};
+var _hoisted_45 = {
+  key: 0
+};
+var _hoisted_46 = {
+  key: 1
+};
+
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Token Generado ");
+
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h1", null, "Utilice el siguiente token y configurelo en el config.ini del raspberry", -1
 /* HOISTED */
 );
-
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Token Generado ");
-
-var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h1", null, "Utilice el siguiente token y configurelo en el config.ini del raspberry", -1
-/* HOISTED */
-);
-
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cerrar ");
-
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Descargar ");
 
 var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cerrar ");
+
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Descargar ");
+
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cerrar ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
@@ -28197,6 +28242,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* STABLE */
 
       })])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_l_map, {
+        ref: "theMap",
         modelValue: $data.zoom,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.zoom = $event;
@@ -28273,9 +28319,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           key: index
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(h.added_at), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(h.action) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(h.comment), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.generateDescription(h)), 1
         /* TEXT */
-        )]), _hoisted_44]);
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_44, [h.received_ok ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_45, "✓")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_46, "✓")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.action == 'photo' && h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+          key: 2,
+          onClick: function onClick($event) {
+            return $options.showImage(h);
+          },
+          "class": "text-indigo-600 hover:text-indigo-900"
+        }, "Ver", 8
+        /* PROPS */
+        , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.action == 'location' && h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
+          key: 3,
+          onClick: function onClick($event) {
+            return $options.centerMap(h);
+          },
+          "class": "text-indigo-600 hover:text-indigo-900"
+        }, "Ver", 8
+        /* PROPS */
+        , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
       }), 128
       /* KEYED_FRAGMENT */
       )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" More people... ")])])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
@@ -28285,10 +28347,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, {
         title: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_45];
+          return [_hoisted_47];
         }),
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.token), 1
+          return [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.token), 1
           /* TEXT */
           )];
         }),
@@ -28299,7 +28361,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             })
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_47];
+              return [_hoisted_49];
             }),
             _: 1
             /* STABLE */
@@ -28337,7 +28399,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mt-2 mr-2"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_48];
+              return [_hoisted_50];
             }),
             _: 1
             /* STABLE */
@@ -28350,7 +28412,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             })
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_49];
+              return [_hoisted_51];
             }),
             _: 1
             /* STABLE */
