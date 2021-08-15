@@ -22792,31 +22792,31 @@ __webpack_require__.r(__webpack_exports__);
     return {
       actions: {
         'photo': {
-          display: "Foto capturada"
+          display: "📸 Foto capturada"
         },
         'location': {
-          display: "Ubicación obtenida"
+          display: "📍 Ubicación obtenida"
         },
         'call': {
-          display: "Llamada realizada"
+          display: "📞 Llamada realizada"
         },
         'system_activate': {
-          display: "Sistema activado"
+          display: "✅ Sistema activado"
         },
         'system_deactivate': {
-          display: "Sistema desactivado"
+          display: "❌  Sistema desactivado"
         },
         'buzzer_activate': {
-          display: "Bocina activada"
+          display: "🔈 Bocina activada"
         },
         'buzzer_deactivate': {
-          display: "Bocina desactivada"
+          display: "🔇 Bocina desactivada"
         },
         'power_cut_off_activate': {
-          display: "Corta corriente activado"
+          display: "⚡️ Corta corriente activado"
         },
         'power_cut_off_deactivate': {
-          display: "Corta corriente desactivado"
+          display: "⚡️ Corta corriente desactivado"
         }
       },
       actionModal: false,
@@ -22896,6 +22896,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     centerMap: function centerMap(status) {
       this.$refs.theMap.leafletObject.panTo([status.statusable.lat, status.statusable.lng]);
+      this.$refs.header.scrollIntoView({
+        behavior: 'smooth'
+      });
     },
     showImage: function showImage(status) {
       this.photoModal = true;
@@ -27973,7 +27976,8 @@ var _hoisted_1 = {
   "class": "font-semibold text-xl text-gray-800 leading-tight"
 };
 var _hoisted_2 = {
-  "class": "py-12"
+  "class": "py-12",
+  ref: "header"
 };
 var _hoisted_3 = {
   "class": "max-w-7xl mx-auto sm:px-6 lg:px-8"
@@ -28327,7 +28331,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             return $options.showImage(h);
           },
           "class": "text-indigo-600 hover:text-indigo-900"
-        }, "Ver", 8
+        }, " Ver", 8
         /* PROPS */
         , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.action == 'location' && h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
           key: 3,
@@ -28335,12 +28339,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             return $options.centerMap(h);
           },
           "class": "text-indigo-600 hover:text-indigo-900"
-        }, "Ver", 8
+        }, " Ver", 8
         /* PROPS */
         , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" More people... ")])])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" More people... ")])])])])])])])])])])], 512
+      /* NEED_PATCH */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_dialog_modal, {
         show: $data.tokenModal,
         onClose: _cache[5] || (_cache[5] = function ($event) {
           return _this.tokenModal = false;

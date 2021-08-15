@@ -1,11 +1,11 @@
 <template>
   <app-layout>
-    <template #header>
+    <template #header >
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Vehículo {{ vehicle.license_plate }}
       </h2>
     </template>
-    <div class="py-12">
+    <div class="py-12" ref="header">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-5 md:gap-4 gap-y-2 gap-x-0">
           <div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -81,7 +81,7 @@
               </dl>
             </div>
           </div>
-          <div class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg">
+          <div  class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg">
             <l-map
               ref="theMap"
               v-model="zoom"
@@ -241,12 +241,12 @@
                               <a v-if="h.action == 'photo' && h.received_response"
                                 @click="showImage(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
-                                >Ver</a
+                                > Ver</a
                               >
                               <a v-if="h.action == 'location' && h.received_response"
                                 @click="centerMap(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
-                                >Ver</a
+                                > Ver</a
                               >
                             </td>
                           </tr>
@@ -350,31 +350,31 @@ export default {
     return {
         actions: {
             'photo': {
-                display: "Foto capturada",
+                display: "📸 Foto capturada",
             },
             'location': {
-                display: "Ubicación obtenida",
+                display: "📍 Ubicación obtenida",
             },
             'call': {
-                display: "Llamada realizada",
+                display: "📞 Llamada realizada",
             },
             'system_activate': {
-                display: "Sistema activado"
+                display: "✅ Sistema activado"
             },
             'system_deactivate': {
-                display: "Sistema desactivado"
+                display: "❌  Sistema desactivado"
             },
             'buzzer_activate': {
-                display: "Bocina activada"
+                display: "🔈 Bocina activada"
             },
             'buzzer_deactivate': {
-                display: "Bocina desactivada"
+                display: "🔇 Bocina desactivada"
             },
             'power_cut_off_activate': {
-                display: "Corta corriente activado"
+                display: "⚡️ Corta corriente activado"
             },
             'power_cut_off_deactivate': {
-                display: "Corta corriente desactivado"
+                display: "⚡️ Corta corriente desactivado"
             }
         },
       actionModal: false,
@@ -456,6 +456,7 @@ export default {
     },
     centerMap(status){
         this.$refs.theMap.leafletObject.panTo([status.statusable.lat,status.statusable.lng]);
+        this.$refs.header.scrollIntoView({behavior: 'smooth'});
     },
     showImage(status){
         this.photoModal = true;
