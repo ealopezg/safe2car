@@ -22900,21 +22900,11 @@ __webpack_require__.r(__webpack_exports__);
         behavior: 'smooth'
       });
     },
-    showImage: function (_showImage) {
-      function showImage(_x) {
-        return _showImage.apply(this, arguments);
-      }
-
-      showImage.toString = function () {
-        return _showImage.toString();
-      };
-
-      return showImage;
-    }(function (status) {
+    showImage: function showImage(status) {
       this.photoModal = true;
-      console.log(showImage);
+      console.log(status);
       this.photoModalImage = status.statusable;
-    })
+    }
   }
 });
 
@@ -28339,7 +28329,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_44, [h.received_ok ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_45, "✓")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_46, "✓")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.action == 'photo' && h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
           key: 2,
           onClick: function onClick($event) {
-            return $options.showImage(h);
+            return _this.showImage(h);
           },
           "class": "text-indigo-600 hover:text-indigo-900"
         }, " Ver", 8
@@ -28347,7 +28337,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), h.action == 'location' && h.received_response ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
           key: 3,
           onClick: function onClick($event) {
-            return $options.centerMap(h);
+            return _this.centerMap(h);
           },
           "class": "text-indigo-600 hover:text-indigo-900"
         }, " Ver", 8

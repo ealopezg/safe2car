@@ -239,12 +239,12 @@
                             >
                             <span v-if="h.received_ok">✓</span><span v-if="h.received_response">✓</span>
                               <a v-if="h.action == 'photo' && h.received_response"
-                                @click="showImage(h)"
+                                @click="this.showImage(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
                                 > Ver</a
                               >
                               <a v-if="h.action == 'location' && h.received_response"
-                                @click="centerMap(h)"
+                                @click="this.centerMap(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
                                 > Ver</a
                               >
@@ -460,7 +460,7 @@ export default {
     },
     showImage(status){
         this.photoModal = true;
-        console.log(showImage);
+        console.log(status);
         this.photoModalImage = status.statusable;
     }
   },
