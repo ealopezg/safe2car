@@ -106,13 +106,13 @@ class VehicleController extends Controller
                 'statuses' => $vehicle->statuses->map(function ($status) use ($vehicle){
                     $statusable = [];
                     if($status->statusable){
-                        if($status->statusable_type = "App\Models\Location"){
+                        if($status->statusable_type == "App\Models\Location"){
                             $statusable = [
                                 'lat' => $status->statusable->latitude,
                                 'lng' => $status->statusable->longitude
                             ];
                         }
-                        else if($status->statusable_type = "App\Models\Photo"){
+                        else if($status->statusable_type == "App\Models\Photo"){
                             $statusable = [
                                 'id' => $status->statusable->id,
                                 'url' =>  route('vehicle.downloadPhoto', ['id' => $vehicle->id,'photo_id' => $status->statusable->id]),
