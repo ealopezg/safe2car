@@ -22900,10 +22900,21 @@ __webpack_require__.r(__webpack_exports__);
         behavior: 'smooth'
       });
     },
-    showImage: function showImage(status) {
+    showImage: function (_showImage) {
+      function showImage(_x) {
+        return _showImage.apply(this, arguments);
+      }
+
+      showImage.toString = function () {
+        return _showImage.toString();
+      };
+
+      return showImage;
+    }(function (status) {
       this.photoModal = true;
+      console.log(showImage);
       this.photoModalImage = status.statusable;
-    }
+    })
   }
 });
 
