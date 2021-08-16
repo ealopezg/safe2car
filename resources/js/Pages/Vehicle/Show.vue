@@ -460,6 +460,7 @@ export default {
     },
     showImage(status){
         this.photoModal = true;
+        console.log(showImage);
         this.photoModalImage = status.statusable;
     }
   },
