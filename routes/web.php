@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/',[VehicleController::class, 'store'])->name('store');
         Route::get('/{id}',[VehicleController::class, 'show'])->name('show');
         Route::post('/{id}/action',[VehicleController::class, 'action'])->name('action');
+        Route::get('/{id}/state',[VehicleController::class, 'state'])->name('state');
         Route::post('/{id}/api',[VehicleController::class, 'generateApiToken'])->name('apitoken');
         Route::get('/{id}/edit',[VehicleController::class, 'edit'])->name('edit');
         Route::get('/{id}/photo/{photo_id}',[VehicleController::class, 'downloadPhoto'])->name('downloadPhoto');

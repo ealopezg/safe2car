@@ -72,20 +72,22 @@
                   </dd>
                 </div>
                 <div class="bg-gray-50 px-4 py-5 sm:gap-4 sm:px-6">
-                    <div class="grid grid-cols-2 gap-2">
-                        <jet-secondary-button> Acciones </jet-secondary-button>
+                    <div class="grid grid-cols-1 gap-2">
+                        <jet-secondary-button @click="this.actionModal = true;"> Acciones </jet-secondary-button>
                         <jet-secondary-button @click="generateToken()"> Token </jet-secondary-button>
+                        <jet-secondary-button @click="generateToken()"> Invitar a alguien </jet-secondary-button>
                     </div>
 
                 </div>
               </dl>
             </div>
           </div>
-          <div  class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg">
+          <div  class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg" style="min-height: 50vh !important;">
             <l-map
               ref="theMap"
               v-model="zoom"
               v-model:zoom="zoom"
+              :maxZoom = "19"
               :center="vehicle.locations.length > 0 ? [vehicle.locations[0].lat,vehicle.locations[0].lng] : [-33.368335929676135, -70.66712776934384]"
                style="z-index: 0;"
             >
@@ -263,6 +265,7 @@
         </div>
       </div>
     </div>
+    <vehicle-action :vehicleId="vehicle.id" :show="actionModal" :isLoading="isLoading" @closed="actionModal = false" @isLoading="isLoading = true" @isNotLoading="isLoading = false"></vehicle-action>
     <jet-dialog-modal :show="tokenModal" @close="this.tokenModal = false">
         <template #title> Token Generado </template>
 
@@ -298,6 +301,7 @@
           </jet-secondary-button>
         </template>
       </jet-dialog-modal>
+      <loading v-model:active="isLoading" :is-full-page="true" />
   </app-layout>
 </template>
 
@@ -323,6 +327,9 @@ import Welcome from "@/Jetstream/Welcome";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 import Toggle from "@/Components/Toggle";
 import axios from 'axios';
+import VehicleAction from '@/Components/VehicleAction';
+import "vue-loading-overlay/dist/vue-loading.css";
+import Loading from "vue-loading-overlay";
 
 export default {
   components: {
@@ -341,7 +348,9 @@ export default {
     LPolyline,
     LPolygon,
     LRectangle,
-    LControlAttribution
+    LControlAttribution,
+    VehicleAction,
+    Loading
   },
   props: {
     vehicle: Object,
@@ -380,7 +389,7 @@ export default {
       actionModal: false,
       tokenModal: false,
       token: "",
-      zoom: 10,
+      zoom: 19,
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       iconWidth: 25,
       iconHeight: 40,
@@ -390,6 +399,8 @@ export default {
           url: null,
           added_at: null,
       },
+      isLoading: false,
+      actionModal: false,
       history: [
         {
           date: "17-2-2021 21:20hrs",
@@ -432,7 +443,7 @@ export default {
     generateToken(){
         this.isLoading = true;
 
-        axios.post(this.vehicle.id+'/api').then((response) => {
+        axios.post(route('vehicle.apitoken',{id: this.vehicle.id})).then((response) => {
            this.token = response.data;
            this.tokenModal = true;
            this.isLoading = false;
@@ -457,6 +468,7 @@ export default {
     centerMap(status){
         this.$refs.theMap.leafletObject.panTo([status.statusable.lat,status.statusable.lng]);
         this.$refs.header.scrollIntoView({behavior: 'smooth'});
+        this.zoom = 19;
     },
     showImage(status){
         this.photoModal = true;

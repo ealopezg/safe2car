@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 use App\Events\StatusSended;
+use Illuminate\Support\Facades\Redis;
+
 class VehicleController extends Controller
 {
     /**
@@ -208,5 +210,14 @@ class VehicleController extends Controller
         $vehicle = $request->user()->vehicles()->where('vehicle_id',$id)->firstOrFail();
         $photo = $vehicle->photos()->where('id',$photo_id)->firstOrFail();
         return Storage::download($photo->path);
+    }
+
+    public function state($id,Request $request){
+        $vehicle = $request->user()->vehicles()->where('vehicle_id',$id)->firstOrFail();
+        return [
+            'system' => $vehicle->system,
+            'buzzer' => $vehicle->buzzer,
+            'cut_off_power' => $vehicle->cut_off_power,
+        ];
     }
 }

@@ -94,62 +94,7 @@
           </div>
         </div>
       </div>
-      <jet-dialog-modal :show="actionModal" @close="closeActionModal">
-        <template #title> Realizar acciones </template>
-
-        <template #content>
-          <div class="mt-4 grid grid-cols-1 justify-items-center">
-            <div
-              class="grid md:grid-cols-3 gap-2 grid-cols-1 justify-items-start"
-            >
-              <div>
-                <Toggle labelledby="toggle-label" v-model="system" @change="clickAction('system',true,system)"/>
-                <label id="toggle-label"> Sistema</label>
-              </div>
-              <div>
-                <Toggle labelledby="toggle-label" v-model="buzzer" @change="clickAction('buzzer',true,buzzer)"/>
-                <label id="toggle-label"> Bocina</label>
-              </div>
-              <div>
-                <Toggle labelledby="toggle-label" v-model="power_cut_off" @change="clickAction('power_cut_off',true,power_cut_off)"/>
-                <label id="toggle-label"> Corta Corriente</label>
-              </div>
-            </div>
-            <div
-              class="
-                grid
-                md:grid-cols-3
-                mt-4
-                grid-cols-1
-                gap-4
-                justify-items-center
-              "
-            >
-              <div>
-                <jet-secondary-button @click="clickAction('photo')">
-                  Tomar fotografía
-                </jet-secondary-button>
-              </div>
-              <div>
-                <jet-secondary-button @click="clickAction('location')">
-                  Obtener Ubicación
-                </jet-secondary-button>
-              </div>
-              <div>
-                <jet-secondary-button @click="clickAction('call')">
-                  Realizar llamada
-                </jet-secondary-button>
-              </div>
-            </div>
-          </div>
-        </template>
-
-        <template #footer>
-          <jet-secondary-button @click="closeActionModal">
-            Cancelar
-          </jet-secondary-button>
-        </template>
-      </jet-dialog-modal>
+    <vehicle-action :vehicleId="vehicle_id" :show="actionModal" :isLoading="isLoading" @closed="actionModal = false" @isLoading="isLoading = true" @isNotLoading="isLoading = false"></vehicle-action>
       <jet-dialog-modal :show="vehicleModal" @close="closeVehicleModal">
 
         <template #title> Nuevo Vehículo </template>
@@ -333,20 +278,20 @@ import JetDialogModal from "@/Jetstream/DialogModal";
 import JetButton from "@/Jetstream/Button";
 import Welcome from "@/Jetstream/Welcome";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton";
-import Toggle from "@vueform/toggle";
 import JetActionMessage from "@/Jetstream/ActionMessage";
 import Loading from "vue-loading-overlay";
 import axios from 'axios';
 import "vue-loading-overlay/dist/vue-loading.css";
+import VehicleAction from '@/Components/VehicleAction';
 export default {
   components: {
     AppLayout,
     JetButton,
     JetSecondaryButton,
     JetDialogModal,
-    Toggle,
     Loading,
     JetActionMessage,
+    VehicleAction
   },
   props: {
     vehicles: Object,
@@ -392,18 +337,8 @@ export default {
                 },
         })
     },
-    clickAction(action,toggle=false,toggleValue = null) {
-        if(toggle){
-            action = action + '_' + (toggleValue ? 'activate' : 'deactivate');
-        }
-        this.isLoading = true;
-        axios.post('vehicle/'+this.vehicle_id+'/action',{action}).then((response) => {
-           this.isLoading = false;
-        })
 
-    },
   },
 };
 </script>
 
-<style src="@vueform/toggle/themes/default.css"></style>
