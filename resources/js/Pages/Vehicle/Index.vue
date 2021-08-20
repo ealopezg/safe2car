@@ -71,6 +71,8 @@
                   <p>Modelo: {{ vehicle.model }}</p>
                   <p>Año: {{ vehicle.year }}</p>
                   <p>Color: {{ vehicle.color }}</p>
+                  <br>
+                  <p>Ultima conexión: {{ vehicle.last_connected }}</p>
                 </div>
                 <div class="mt-2">
                   <jet-button

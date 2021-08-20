@@ -32,6 +32,7 @@ class VehicleController extends Controller
                     'model' => $vehicle->model,
                     'year' => $vehicle->year,
                     'color' => $vehicle->color,
+                    'last_connected' => $vehicle->last_connected,
                     'owner' => $vehicle->pivot->owner,
                 ];
             }),
@@ -89,6 +90,7 @@ class VehicleController extends Controller
                 'model' => $vehicle->model,
                 'year' => $vehicle->year,
                 'color' => $vehicle->color,
+                'last_connected' => $vehicle->last_connected,
                 'owner' => $vehicle->pivot->owner,
                 'photos' => $vehicle->photos()->latest()->get()->map(function ($photo) use ($vehicle){
                     return [
