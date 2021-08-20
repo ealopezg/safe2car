@@ -22,18 +22,13 @@ class VehicleDeviceController extends Controller
         return response('OK');
     }
 
-    public function ok(Request $request){
-        $validated = $request->validate([
-            'id' => ['required'],
-            'action' => ['required'],
-            'added_at' => ['required','date']
-        ]);
+    public function getState(Request $request){
         $vehicle = $request->user();
-
-        $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
-        $status->received_ok = true;
-        $status->save();
-        return response('OK');
+        return response()->json([
+            'system' => $vehicle->system,
+            'buzzer' => $vehicle->buzzer,
+            'cut_off_power' =>  $vehicle->cut_off_power,
+        ]);
     }
 
 

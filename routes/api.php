@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->prefix('vehicle')->name('api.vehicle.')->grou
     Route::post('/alive',[VehicleDeviceController::class, 'alive'])->name('alive');
     Route::post('/ok',[VehicleDeviceController::class, 'ok'])->name('ok');
     Route::post('/action',[VehicleDeviceController::class, 'action'])->name('action');
+    Route::get('/state',[VehicleDeviceController::class, 'getState'])->name('state');
 });
