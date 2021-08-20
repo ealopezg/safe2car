@@ -35,14 +35,23 @@ class VehicleDeviceController extends Controller
         return response('OK');
     }
 
+
     public function action(Request $request){
         $validated = $request->validate([
-            'id' => ['required'],
+            'id' => ['sometimes'],
             'action' => ['required'],
             'added_at' => ['required','date'],
             'args' => ['sometimes','array']
         ]);
         $vehicle = $request->user();
+        if($validated['action'] == 'motion'){
+            unset($validated['id']);
+            $status = new \App\Models\Status($validated);
+            $status->received_ok = true;
+            $status->vehicle()->associate($vehicle);
+            $status->save();
+            return response('OK');
+        }
         $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
         switch ($validated['action']) {
             case 'OK':

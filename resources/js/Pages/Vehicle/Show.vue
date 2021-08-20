@@ -387,6 +387,9 @@ export default {
             },
             'power_cut_off_deactivate': {
                 display: "⚡️ Corta corriente desactivado"
+            },
+            'motion': {
+                display: "😮 Movimiento detectado"
             }
         },
       actionModal: false,
