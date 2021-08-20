@@ -146,6 +146,9 @@
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </jet-responsive-nav-link>
+                        <jet-responsive-nav-link :href="route('vehicle.index')" :active="route().current('vehicle.index')">
+                            Mis Vehiculos
+                        </jet-responsive-nav-link>
                     </div>
 
                     <!-- Responsive Settings Options -->

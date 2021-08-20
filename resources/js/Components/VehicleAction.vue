@@ -64,7 +64,7 @@
 
       <template #footer>
         <jet-secondary-button @click="closeModal()">
-          Cancelar
+          Cerrar
         </jet-secondary-button>
       </template>
     </jet-dialog-modal>

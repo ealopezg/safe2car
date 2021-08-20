@@ -90,14 +90,14 @@ class VehicleController extends Controller
                 'year' => $vehicle->year,
                 'color' => $vehicle->color,
                 'owner' => $vehicle->pivot->owner,
-                'photos' => $vehicle->photos->map(function ($photo) use ($vehicle){
+                'photos' => $vehicle->photos()->latest()->get()->map(function ($photo) use ($vehicle){
                     return [
                         'id' => $photo->id,
                         'url' =>  route('vehicle.downloadPhoto', ['id' => $vehicle->id,'photo_id' => $photo->id]),
                         'added_at' => $photo->added_at,
                     ];
                 }),
-                'locations' => $vehicle->locations->map(function ($location){
+                'locations' => $vehicle->locations()->latest()->get()->map(function ($location){
                     return [
                         'id' => $location->id,
                         'lat' => $location->latitude,
@@ -105,7 +105,7 @@ class VehicleController extends Controller
                         'added_at' => $location->added_at
                     ];
                 }),
-                'statuses' => $vehicle->statuses->map(function ($status) use ($vehicle){
+                'statuses' => $vehicle->statuses()->latest()->get()->map(function ($status) use ($vehicle){
                     $statusable = [];
                     if($status->statusable){
                         if($status->statusable_type == "App\Models\Location"){

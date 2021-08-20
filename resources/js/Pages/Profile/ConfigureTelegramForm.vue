@@ -1,22 +1,22 @@
 <template>
     <jet-action-section>
         <template #title>
-            Borrar cuenta
+            Configurar Telegram
         </template>
 
         <template #description>
-            Borra tu cuenta de forma permanente
+            Configura el bot de telegram para que pueda enviar notificaciones directamente a tu cuenta
         </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600">
-                Una vez que se elimine su cuenta, todos sus recursos y datos se eliminarán permanentemente. Antes de eliminar su cuenta, descargue cualquier dato o información que desee conservar.
+                Se le abrirá un link donde podra configurar su usuario de Telegram
             </div>
 
             <div class="mt-5">
-                <jet-danger-button @click="confirmUserDeletion">
-                    Borrar cuenta
-                </jet-danger-button>
+                <jet-button type="button" @click="confirmUserDeletion">
+                    Configurar Telegram
+                </jet-button>
             </div>
 
             <!-- Delete Account Confirmation Modal -->
@@ -43,9 +43,9 @@
                         Cancelar
                     </jet-secondary-button>
 
-                    <jet-danger-button class="ml-2" @click="deleteUser" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    <jet-button type="button" class="ml-2" @click="deleteUser" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Borrar cuenta
-                    </jet-danger-button>
+                    </jet-button>
                 </template>
             </jet-dialog-modal>
         </template>
@@ -59,6 +59,7 @@
     import JetInput from '@/Jetstream/Input'
     import JetInputError from '@/Jetstream/InputError'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+    import JetButton from '@/Jetstream/Button'
 
     export default {
         components: {
@@ -68,6 +69,7 @@
             JetInput,
             JetInputError,
             JetSecondaryButton,
+            JetButton
         },
 
         data() {

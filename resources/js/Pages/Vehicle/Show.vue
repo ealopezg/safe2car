@@ -73,9 +73,9 @@
                 </div>
                 <div class="bg-gray-50 px-4 py-5 sm:gap-4 sm:px-6">
                     <div class="grid grid-cols-1 gap-2">
-                        <jet-secondary-button @click="this.actionModal = true;"> Acciones </jet-secondary-button>
-                        <jet-secondary-button @click="generateToken()"> Token </jet-secondary-button>
-                        <jet-secondary-button @click="generateToken()"> Invitar a alguien </jet-secondary-button>
+                        <jet-secondary-button @click="this.actionModal = true;" v-if="this.vehicle.owner"> Acciones </jet-secondary-button>
+                        <jet-secondary-button @click="generateToken()" v-if="this.vehicle.owner"> Token </jet-secondary-button>
+                        <jet-secondary-button @click="generateToken()" v-if="this.vehicle.owner"> Invitar a alguien </jet-secondary-button>
                     </div>
 
                 </div>
@@ -95,9 +95,15 @@
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 :attribution="attribution"
               ></l-tile-layer>
-              <l-marker v-for="location,index in vehicle.locations" v-bind:key="index" :lat-lng="[location.lat, location.lng]">
-                <l-tooltip>{{location.added_at}}</l-tooltip>
+              <l-marker v-if="vehicle.locations.length > 0" :lat-lng="[vehicle.locations[0].lat, vehicle.locations[0].lng]" :icon="marker">
+                <l-tooltip>{{vehicle.locations[0].added_at}}</l-tooltip>
               </l-marker>
+                <div v-if="vehicle.locations.length > 0">
+                    <l-marker v-for="location,index in vehicle.locations.slice(1)" v-bind:key="index" :lat-lng="[location.lat, location.lng]">
+                        <l-tooltip>{{location.added_at}}</l-tooltip>
+                    </l-marker>
+                </div>
+
             </l-map>
           </div>
 
@@ -176,12 +182,11 @@
                     <div
                       class="
                         shadow
-                        overflow-hidden
                         border-b border-gray-200
                         sm:rounded-lg
                       "
                     >
-                      <table class="min-w-full divide-y divide-gray-200">
+                      <table class="table-auto min-w-full max-w-full divide-y divide-gray-200 ">
                         <thead class="bg-gray-50">
                           <tr>
                             <th
@@ -220,12 +225,12 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                           <tr v-for="(h, index) in vehicle.statuses" v-bind:key="index">
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4">
                               <div class="text-sm text-gray-500">
                                 {{ h.added_at }}
                               </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4">
                               <div class="text-sm text-gray-900">
                                 {{ generateDescription(h)}}
                               </div>
@@ -234,7 +239,6 @@
                               class="
                                 px-6
                                 py-4
-                                whitespace-nowrap
                                 text-right text-sm
                                 font-medium
                               "
@@ -270,7 +274,7 @@
         <template #title> Token Generado </template>
 
         <template #content>
-            <h1>Utilice el siguiente token y configurelo en el config.ini del raspberry</h1>
+            <h1>Con el cable LAN del dispositivo conectado a una red, ingrese el token en el servidor web del raspberry en el puerto 8080</h1>
             {{ token }}
         </template>
 
@@ -330,7 +334,6 @@ import axios from 'axios';
 import VehicleAction from '@/Components/VehicleAction';
 import "vue-loading-overlay/dist/vue-loading.css";
 import Loading from "vue-loading-overlay";
-
 export default {
   components: {
     AppLayout,
@@ -423,7 +426,19 @@ export default {
           description: "Ubicación obtenida",
         },
       ],
+      marker: null
     };
+  },
+  async beforeMount(){
+      const { icon } = await import("leaflet/dist/leaflet-src.esm");
+      this.marker = icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+        });
   },
   computed: {
     iconUrl() {

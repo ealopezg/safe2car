@@ -85,7 +85,7 @@
                   >
                     Ver
                   </jet-button>
-                  <jet-secondary-button @click="openActionModal(vehicle.id)">
+                  <jet-secondary-button @click="openActionModal(vehicle.id)" v-if="vehicle.owner">
                     Acciones
                   </jet-secondary-button>
                 </div>
