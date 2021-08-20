@@ -28484,7 +28484,7 @@ var _hoisted_18 = {
   "class": "mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
 };
 var _hoisted_19 = {
-  "class": "\n                    bg-white\n                    px-4\n                    py-5\n                    sm:grid sm:grid-cols-3\n                    sm:gap-4\n                    sm:px-6\n                  "
+  "class": "\n                    bg-gray-50\n                    px-4\n                    py-5\n                    sm:grid sm:grid-cols-3\n                    sm:gap-4\n                    sm:px-6\n                  "
 };
 
 var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("dt", {
@@ -28497,7 +28497,7 @@ var _hoisted_21 = {
   "class": "mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
 };
 var _hoisted_22 = {
-  "class": "bg-gray-50 px-4 py-5 sm:gap-4 sm:px-6"
+  "class": "bg-white px-4 py-5 sm:gap-4 sm:px-6"
 };
 var _hoisted_23 = {
   "class": "grid grid-cols-1 gap-2"

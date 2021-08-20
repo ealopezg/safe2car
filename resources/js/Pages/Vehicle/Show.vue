@@ -73,7 +73,7 @@
                 </div>
                 <div
                   class="
-                    bg-white
+                    bg-gray-50
                     px-4
                     py-5
                     sm:grid sm:grid-cols-3
@@ -86,7 +86,7 @@
                     {{ vehicle.last_connected }}
                   </dd>
                 </div>
-                <div class="bg-gray-50 px-4 py-5 sm:gap-4 sm:px-6">
+                <div class="bg-white px-4 py-5 sm:gap-4 sm:px-6">
                     <div class="grid grid-cols-1 gap-2">
                         <jet-secondary-button @click="this.actionModal = true;" v-if="this.vehicle.owner"> Acciones </jet-secondary-button>
                         <jet-secondary-button @click="generateToken()" v-if="this.vehicle.owner"> Token </jet-secondary-button>
