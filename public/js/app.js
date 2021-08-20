@@ -23002,6 +23002,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         'power_cut_off_deactivate': {
           display: "⚡️ Corta corriente desactivado"
+        },
+        'motion': {
+          display: "😮 Movimiento detectado"
         }
       },
       actionModal: false,
