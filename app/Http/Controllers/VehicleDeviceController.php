@@ -29,6 +29,7 @@ class VehicleDeviceController extends Controller
             'added_at' => ['required','date']
         ]);
         $vehicle = $request->user();
+
         $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
         $status->received_ok = true;
         $status->save();
@@ -44,6 +45,8 @@ class VehicleDeviceController extends Controller
             'args' => ['sometimes','array']
         ]);
         $vehicle = $request->user();
+        $vehicle->last_connected = now();
+        $vehicle->save();
         if($validated['action'] == 'motion'){
             unset($validated['id']);
             $status = new \App\Models\Status($validated);
@@ -57,6 +60,34 @@ class VehicleDeviceController extends Controller
             case 'OK':
                 $status->received_ok = true;
                 $status->save();
+                switch($status->action){
+                    case 'system_activate':
+                        $vehicle->system = true;
+                        $vehicle->save();
+                        break;
+                    case 'system_deactivate':
+                        $vehicle->system = false;
+                        $vehicle->save();
+                        break;
+                    case 'buzzer_activate':
+                        $vehicle->buzzer = true;
+                        $vehicle->save();
+                        break;
+                    case 'buzzer_deactivate':
+                        $vehicle->buzzer = false;
+                        $vehicle->save();
+                        break;
+                    case 'power_cut_off_activate':
+                        $vehicle->cut_off_power = true;
+                        $vehicle->save();
+                        break;
+                    case 'power_cut_off_deactivate':
+                        $vehicle->cut_off_power = false;
+                        $vehicle->save();
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case 'photo':
                 $photo = new \App\Models\Photo;
@@ -85,9 +116,9 @@ class VehicleDeviceController extends Controller
                 $status->save();
                 break;
             default:
-                # code...
                 break;
         }
+
         return response('OK');
 
 
