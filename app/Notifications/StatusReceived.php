@@ -31,7 +31,7 @@ class StatusReceived extends Notification
      */
     public function via($notifiable)
     {
-        return ['telegram'];
+        return [TelegramChannel::class];
     }
 
     /**
