@@ -11,6 +11,8 @@ use NotificationChannels\Telegram\TelegramMessage;
 use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramLocation;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
+
 
 class StatusReceived extends Notification
 {
@@ -59,18 +61,19 @@ class StatusReceived extends Notification
                 return TelegramFile::create()
                     ->to($notifiable->telegram_user_id)
                     ->content('Nueva fotografía')
-                    ->file('/storage/app/'.$photo->path, 'photo');
+                    ->file(Storage::path($photo->path), 'photo');
                 break;
             case 'location':
                 $location = $this->status->statusable;
                 return TelegramLocation::create()
+                    ->to($notifiable->telegram_user_id)
                     ->latitude($location->latitude)
                     ->longitude($location->longitude);
                 break;
             case 'motion':
                 return TelegramMessage::create()
                     ->to($notifiable->telegram_user_id)
-                    ->content('Se ha detectado movimiento');
+                    ->content('Se ha detectado movimiento en tu vehiculo');
                 break;
             default:
                 # code...
