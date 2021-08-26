@@ -8,6 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
+use NotificationChannels\Telegram\TelegramFile;
+use NotificationChannels\Telegram\TelegramLocation;
 use Illuminate\Notifications\Notification;
 
 class StatusReceived extends Notification
@@ -51,27 +53,29 @@ class StatusReceived extends Notification
 
     public function toTelegram($notifiable)
     {
-        $url = url('/vehicle/' . $this->status->vehicle->id);
-        $t_message = TelegramMessage::create()
-                        ->to($notifiable->telegram_user_id)
-                        ->button('Ver estado', $url);
         switch ($this->status->action) {
             case 'photo':
                 $photo = $this->status->statusable;
-                $t_message = $t_message->file('/storage/app/'.$photo->path, 'photo')->content('Nueva fotografía');
+                return TelegramFile::create()
+                    ->to($notifiable->telegram_user_id)
+                    ->content('Nueva fotografía')
+                    ->file('/storage/app/'.$photo->path, 'photo');
                 break;
             case 'location':
                 $location = $this->status->statusable;
-                $t_message = $t_message->latitude($location->latitude)->longitude($location->longitude)->content('Nueva ubicación');
+                return TelegramLocation::create()
+                    ->latitude($location->latitude)
+                    ->longitude($location->longitude);
                 break;
             case 'motion':
-                $t_message = $t_message->content('Se ha detectado movimiento en el vehículo');
+                return TelegramMessage::create()
+                    ->to($notifiable->telegram_user_id)
+                    ->content('Se ha detectado movimiento');
                 break;
             default:
                 # code...
                 break;
         }
-        return $t_message;
 
     }
 
