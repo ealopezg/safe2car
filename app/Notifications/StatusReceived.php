@@ -52,11 +52,27 @@ class StatusReceived extends Notification
     public function toTelegram($notifiable)
     {
         $url = url('/vehicle/' . $this->status->vehicle->id);
+        $t_message = TelegramMessage::create()
+                        ->to($notifiable->telegram_user_id)
+                        ->button('Ver estado', $url);
+        switch ($this->status->action) {
+            case 'photo':
+                $photo = $this->status->statusable;
+                $t_message = $t_message->file('/storage/app/'.$photo->path, 'photo')->content('Nueva fotografía');
+                break;
+            case 'location':
+                $location = $this->status->statusable;
+                $t_message = $t_message->latitude($location->latitude)->longitude($location->longitude)->content('Nueva ubicación');
+                break;
+            case 'motion':
+                $t_message = $t_message->content('Se ha detectado movimiento en el vehículo');
+                break;
+            default:
+                # code...
+                break;
+        }
+        return $t_message;
 
-        return TelegramMessage::create()
-            ->to($notifiable->telegram_user_id)
-            ->content("Hola, se ha detectado un nuevo evento")
-            ->button('Ver estado', $url);
     }
 
     /**
