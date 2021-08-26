@@ -14,40 +14,10 @@
             </div>
 
             <div class="mt-5">
-                <jet-button type="button" @click="confirmUserDeletion">
+                <jet-button type="button" @click="setupTelegram">
                     Configurar Telegram
                 </jet-button>
             </div>
-
-            <!-- Delete Account Confirmation Modal -->
-            <jet-dialog-modal :show="confirmingUserDeletion" @close="closeModal">
-                <template #title>
-                    Borrar cuenta
-                </template>
-
-                <template #content>
-                    ¿Estás seguro de que deseas eliminar tu cuenta? Una vez que se elimine su cuenta, todos sus recursos y datos se eliminarán permanentemente. Ingrese su contraseña para confirmar que desea eliminar permanentemente su cuenta.
-
-                    <div class="mt-4">
-                        <jet-input type="password" class="mt-1 block w-3/4" placeholder="Contraseña"
-                                    ref="password"
-                                    v-model="form.password"
-                                    @keyup.enter="deleteUser" />
-
-                        <jet-input-error :message="form.errors.password" class="mt-2" />
-                    </div>
-                </template>
-
-                <template #footer>
-                    <jet-secondary-button @click="closeModal">
-                        Cancelar
-                    </jet-secondary-button>
-
-                    <jet-button type="button" class="ml-2" @click="deleteUser" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Borrar cuenta
-                    </jet-button>
-                </template>
-            </jet-dialog-modal>
         </template>
     </jet-action-section>
 </template>
@@ -60,7 +30,7 @@
     import JetInputError from '@/Jetstream/InputError'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton'
     import JetButton from '@/Jetstream/Button'
-
+    import axios from 'axios'
     export default {
         components: {
             JetActionSection,
@@ -71,37 +41,11 @@
             JetSecondaryButton,
             JetButton
         },
-
-        data() {
-            return {
-                confirmingUserDeletion: false,
-
-                form: this.$inertia.form({
-                    password: '',
-                })
-            }
-        },
-
         methods: {
-            confirmUserDeletion() {
-                this.confirmingUserDeletion = true;
-
-                setTimeout(() => this.$refs.password.focus(), 250)
-            },
-
-            deleteUser() {
-                this.form.delete(route('current-user.destroy'), {
-                    preserveScroll: true,
-                    onSuccess: () => this.closeModal(),
-                    onError: () => this.$refs.password.focus(),
-                    onFinish: () => this.form.reset(),
+            setupTelegram(){
+                axios.post(route('user.telegram')).then((response) => {
+                    window.open(response.data, '_blank')
                 })
-            },
-
-            closeModal() {
-                this.confirmingUserDeletion = false
-
-                this.form.reset()
             },
         },
     }

@@ -18,7 +18,7 @@
             </div>
             <div class="mt-4">
                 <jet-label for="phone" value="Teléfono" />
-                <jet-input-prepend id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autocomplete="phone" prepend="+569" placeholder="99999999 "/>
+                <jet-input-prepend id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autocomplete="phone" prepend="+56" placeholder="99999999 "/>
             </div>
 
             <div class="mt-4">

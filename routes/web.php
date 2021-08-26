@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\TelegramController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +29,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
-
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('/setup_telegram',[TelegramController::class, 'userSetupTelegram'])->name('user.telegram');
     Route::prefix('vehicle')->name('vehicle.')->group(function (){
         Route::get('/',[VehicleController::class, 'index'])->name('index');
         Route::post('/',[VehicleController::class, 'store'])->name('store');

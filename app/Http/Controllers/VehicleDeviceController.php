@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\StatusReceived;
+
 class VehicleDeviceController extends Controller
 {
     public function alive(Request $request){
@@ -48,6 +51,7 @@ class VehicleDeviceController extends Controller
             $status->received_ok = true;
             $status->vehicle()->associate($vehicle);
             $status->save();
+            Notification::send($vehicle->users, new StatusReceived($status));
             return response('OK');
         }
         $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
@@ -96,6 +100,7 @@ class VehicleDeviceController extends Controller
                 $status->statusable()->associate($photo);
                 $status->received_response = true;
                 $status->save();
+                Notification::send($vehicle->users, new StatusReceived($status));
                 break;
 
             case 'location':
@@ -109,6 +114,7 @@ class VehicleDeviceController extends Controller
                 $status->statusable()->associate($location);
                 $status->received_response = true;
                 $status->save();
+                Notification::send($vehicle->users, new StatusReceived($status));
                 break;
             default:
                 break;

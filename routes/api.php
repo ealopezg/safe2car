@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleDeviceController;
+use App\Http\Controllers\TelegramController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::middleware('auth:sanctum')->prefix('vehicle')->name('api.vehicle.')->grou
     Route::post('/action',[VehicleDeviceController::class, 'action'])->name('action');
     Route::get('/state',[VehicleDeviceController::class, 'getState'])->name('state');
 });
+
+Route::post('/telegram',[TelegramController::class, 'telegram'])->name('telegram');
