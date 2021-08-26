@@ -17,7 +17,7 @@ class TelegramController extends Controller
 
 
     public function telegram(Request $request){
-        $message = $request->get('message');
+        $message = $request->input('message');
         $chat_id = $message['chat']['id'];
         $text = explode(' ',$message['text']);
         if($text[0] == '/start' && isset($text[1])){
@@ -26,6 +26,6 @@ class TelegramController extends Controller
             $user->telegram_user_id = $chat_id;
             $user->save();
         }
-        return response('OK');
+        return 1;
     }
 }
