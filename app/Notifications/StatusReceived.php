@@ -62,7 +62,7 @@ class StatusReceived extends Notification
                 $photo = $this->status->statusable;
                 return TelegramFile::create()
                     ->to($notifiable->telegram_user_id)
-                    ->content('📸 Fotografía de tu vehiculo'.$this->status->vehicle->license_plate)
+                    ->content('📸 Fotografía de tu vehiculo '.$this->status->vehicle->license_plate)
                     ->file(Storage::path($photo->path), 'photo');
                 break;
             case 'location':
