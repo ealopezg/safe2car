@@ -10,6 +10,7 @@ use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
 use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramLocation;
+use NotificationChannels\Telegram\Telegram;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,16 +56,24 @@ class StatusReceived extends Notification
 
     public function toTelegram($notifiable)
     {
+
         switch ($this->status->action) {
             case 'photo':
                 $photo = $this->status->statusable;
                 return TelegramFile::create()
                     ->to($notifiable->telegram_user_id)
-                    ->content('Nueva fotografía')
+                    ->content('📸 Fotografía de tu vehiculo'.$this->status->vehicle->license_plate)
                     ->file(Storage::path($photo->path), 'photo');
                 break;
             case 'location':
                 $location = $this->status->statusable;
+                $message = TelegramMessage::create()
+                        ->to($notifiable->telegram_user_id)
+                        ->content('📍 Ubicación tu vehículo '.$this->status->vehicle->license_plate)
+                        ->toArray();
+
+                $telegram = new Telegram(config('services.telegram-bot-api.token'));
+                $telegram->sendMessage($message);
                 return TelegramLocation::create()
                     ->to($notifiable->telegram_user_id)
                     ->latitude($location->latitude)
@@ -73,7 +82,7 @@ class StatusReceived extends Notification
             case 'motion':
                 return TelegramMessage::create()
                     ->to($notifiable->telegram_user_id)
-                    ->content('Se ha detectado movimiento en tu vehiculo');
+                    ->content('😮 Nuevo movimiento en tu vehículo '.$this->status->vehicle->license_plate);
                 break;
             default:
                 # code...
