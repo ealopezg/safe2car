@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\StatusReceived;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewMovement;
 
 class VehicleDeviceController extends Controller
 {
@@ -52,6 +54,9 @@ class VehicleDeviceController extends Controller
             $status->vehicle()->associate($vehicle);
             $status->save();
             Notification::send($vehicle->users, new StatusReceived($status));
+            foreach ($vehicle->users as $u) {
+                Mail::to($u)->send(new NewMovement($status));
+            }
             return response('OK');
         }
         $status = $vehicle->statuses()->where('id',$validated['id'])->firstOrFail();
