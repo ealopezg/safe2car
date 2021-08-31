@@ -63,6 +63,7 @@ class StatusReceived extends Notification
                 return TelegramFile::create()
                     ->to($notifiable->telegram_user_id)
                     ->content('📸 Fotografía de tu vehiculo '.$this->status->vehicle->license_plate)
+                    ->button('Ver vehículo',route('vehicle.index',['id' => $this->status->vehicle->id]))
                     ->file(Storage::path($photo->path), 'photo');
                 break;
             case 'location':
@@ -76,13 +77,15 @@ class StatusReceived extends Notification
                 $telegram->sendMessage($message);
                 return TelegramLocation::create()
                     ->to($notifiable->telegram_user_id)
+                    ->button('Ver vehículo',route('vehicle.index',['id' => $this->status->vehicle->id]))
                     ->latitude($location->latitude)
                     ->longitude($location->longitude);
                 break;
             case 'motion':
                 return TelegramMessage::create()
                     ->to($notifiable->telegram_user_id)
-                    ->content('😮 Nuevo movimiento en tu vehículo '.$this->status->vehicle->license_plate);
+                    ->content('😮 Nuevo movimiento en tu vehículo '.$this->status->vehicle->license_plate)
+                    ->button('Ver vehículo',route('vehicle.index',['id' => $this->status->vehicle->id]));
                 break;
             default:
                 # code...

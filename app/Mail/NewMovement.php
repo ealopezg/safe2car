@@ -28,7 +28,8 @@ class NewMovement extends Mailable
      */
     public function build()
     {
-        return $this->from('contacto@safetocar.cl', 'Safe2Car')
+        return $this->subject('Nuevo Movimiento')
+                    ->from('contacto@safetocar.cl', 'Safe2Car')
                     ->view('movement',['license_plate' => $this->status->vehicle->license_plate,'vehicle_id' => $this->status->vehicle->id]);
     }
 }
