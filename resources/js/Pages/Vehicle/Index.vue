@@ -72,7 +72,7 @@
                   <p>Año: {{ vehicle.year }}</p>
                   <p>Color: {{ vehicle.color }}</p>
                   <br>
-                  <p>Ultima conexión: {{ vehicle.last_connected }}</p>
+                  <p>Ultima conexión: {{ vehicle.last_connected ? vehicle.last_connected : 'Nunca' }}</p>
                 </div>
                 <div class="mt-2">
                   <jet-button

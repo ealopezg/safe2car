@@ -29,10 +29,13 @@ class VehicleDeviceController extends Controller
 
     public function getState(Request $request){
         $vehicle = $request->user();
+        $owner_phones = $vehicle->users()->pluck('phone')->toArray();
+
         return response()->json([
             'system' => $vehicle->system,
             'buzzer' => $vehicle->buzzer,
             'cut_off_power' =>  $vehicle->cut_off_power,
+            'owner_phones' => $owner_phones,
         ]);
     }
 

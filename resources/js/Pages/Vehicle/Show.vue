@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <template #header >
+    <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Vehículo {{ vehicle.license_plate }}
       </h2>
@@ -81,44 +81,76 @@
                     sm:px-6
                   "
                 >
-                  <dt class="text-sm font-medium text-gray-500">Ultima conexión</dt>
+                  <dt class="text-sm font-medium text-gray-500">
+                    Ultima conexión
+                  </dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ vehicle.last_connected }}
+                    {{
+                      vehicle.last_connected ? vehicle.last_connected : "Nunca"
+                    }}
                   </dd>
                 </div>
                 <div class="bg-white px-4 py-5 sm:gap-4 sm:px-6">
-                    <div class="grid grid-cols-1 gap-2">
-                        <jet-secondary-button @click="this.actionModal = true;" v-if="this.vehicle.owner"> Acciones </jet-secondary-button>
-                        <jet-secondary-button @click="generateToken()" v-if="this.vehicle.owner"> Token </jet-secondary-button>
-                        <jet-secondary-button @click="generateToken()" v-if="this.vehicle.owner"> Invitar a alguien </jet-secondary-button>
-                    </div>
-
+                  <div class="grid grid-cols-1 gap-2">
+                    <jet-secondary-button
+                      @click="this.actionModal = true"
+                      v-if="this.vehicle.owner"
+                    >
+                      Acciones
+                    </jet-secondary-button>
+                    <jet-secondary-button
+                      @click="generateToken()"
+                      v-if="this.vehicle.owner"
+                    >
+                      Token
+                    </jet-secondary-button>
+                    <jet-secondary-button
+                      @click="this.inviteModal = true"
+                      v-if="this.vehicle.owner"
+                    >
+                      Invitar a alguien
+                    </jet-secondary-button>
+                  </div>
                 </div>
               </dl>
             </div>
           </div>
-          <div  class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg" style="min-height: 50vh !important;">
+          <div
+            class="col-span-4 bg-white shadow overflow-hidden sm:rounded-lg"
+            style="min-height: 50vh !important"
+          >
             <l-map
               ref="theMap"
               v-model="zoom"
               v-model:zoom="zoom"
-              :maxZoom = "19"
-              :center="vehicle.locations.length > 0 ? [vehicle.locations[0].lat,vehicle.locations[0].lng] : [-33.368335929676135, -70.66712776934384]"
-               style="z-index: 0;"
+              :maxZoom="19"
+              :center="
+                vehicle.locations.length > 0
+                  ? [vehicle.locations[0].lat, vehicle.locations[0].lng]
+                  : [-33.368335929676135, -70.66712776934384]
+              "
+              style="z-index: 0"
             >
               <l-tile-layer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 :attribution="attribution"
               ></l-tile-layer>
-              <l-marker v-if="vehicle.locations.length > 0" :lat-lng="[vehicle.locations[0].lat, vehicle.locations[0].lng]" :icon="marker">
-                <l-tooltip>{{vehicle.locations[0].added_at}}</l-tooltip>
+              <l-marker
+                v-if="vehicle.locations.length > 0"
+                :lat-lng="[vehicle.locations[0].lat, vehicle.locations[0].lng]"
+                :icon="marker"
+              >
+                <l-tooltip>{{ vehicle.locations[0].added_at }}</l-tooltip>
               </l-marker>
-                <div v-if="vehicle.locations.length > 0">
-                    <l-marker v-for="location,index in vehicle.locations.slice(1)" v-bind:key="index" :lat-lng="[location.lat, location.lng]">
-                        <l-tooltip>{{location.added_at}}</l-tooltip>
-                    </l-marker>
-                </div>
-
+              <div v-if="vehicle.locations.length > 0">
+                <l-marker
+                  v-for="(location, index) in vehicle.locations.slice(1)"
+                  v-bind:key="index"
+                  :lat-lng="[location.lat, location.lng]"
+                >
+                  <l-tooltip>{{ location.added_at }}</l-tooltip>
+                </l-marker>
+              </div>
             </l-map>
           </div>
 
@@ -149,14 +181,16 @@
               </div>
               <section class="py-8 px-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 -mx-4 -mb-8">
-                    <div  v-for="photo,index in vehicle.photos" v-bind:key="index" @click="this.photoModal = true; this.photoModalImage = photo">
-                        <img
-
-                            class="rounded shadow-md"
-                            :src="photo.url"
-                            alt=""
-                        />
-                    </div>
+                  <div
+                    v-for="(photo, index) in vehicle.photos"
+                    v-bind:key="index"
+                    @click="
+                      this.photoModal = true;
+                      this.photoModalImage = photo;
+                    "
+                  >
+                    <img class="rounded shadow-md" :src="photo.url" alt="" />
+                  </div>
                 </div>
               </section>
             </div>
@@ -194,14 +228,15 @@
                       lg:px-8
                     "
                   >
-                    <div
-                      class="
-                        shadow
-                        border-b border-gray-200
-                        sm:rounded-lg
-                      "
-                    >
-                      <table class="table-auto min-w-full max-w-full divide-y divide-gray-200 ">
+                    <div class="shadow border-b border-gray-200 sm:rounded-lg">
+                      <table
+                        class="
+                          table-auto
+                          min-w-full
+                          max-w-full
+                          divide-y divide-gray-200
+                        "
+                      >
                         <thead class="bg-gray-50">
                           <tr>
                             <th
@@ -239,7 +274,10 @@
                           </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                          <tr v-for="(h, index) in vehicle.statuses" v-bind:key="index">
+                          <tr
+                            v-for="(h, index) in vehicle.statuses"
+                            v-bind:key="index"
+                          >
                             <td class="px-6 py-4">
                               <div class="text-sm text-gray-500">
                                 {{ h.added_at }}
@@ -247,27 +285,31 @@
                             </td>
                             <td class="px-6 py-4">
                               <div class="text-sm text-gray-900">
-                                {{ generateDescription(h)}}
+                                {{ generateDescription(h) }}
                               </div>
                             </td>
                             <td
-                              class="
-                                px-6
-                                py-4
-                                text-right text-sm
-                                font-medium
-                              "
+                              class="px-6 py-4 text-right text-sm font-medium"
                             >
-                            <span v-if="h.received_ok">✓</span><span v-if="h.received_response">✓</span>
-                              <a v-if="h.action == 'photo' && h.received_response"
+                              <span v-if="h.received_ok">✓</span
+                              ><span v-if="h.received_response">✓</span>
+                              <a
+                                v-if="
+                                  h.action == 'photo' && h.received_response
+                                "
                                 @click="this.showImage(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
-                                > Ver</a
                               >
-                              <a v-if="h.action == 'location' && h.received_response"
+                                Ver</a
+                              >
+                              <a
+                                v-if="
+                                  h.action == 'location' && h.received_response
+                                "
                                 @click="this.centerMap(h)"
                                 class="text-indigo-600 hover:text-indigo-900"
-                                > Ver</a
+                              >
+                                Ver</a
                               >
                             </td>
                           </tr>
@@ -284,43 +326,94 @@
         </div>
       </div>
     </div>
-    <vehicle-action :vehicleId="vehicle.id" :show="actionModal" :isLoading="isLoading" @closed="actionModal = false" @isLoading="isLoading = true" @isNotLoading="isLoading = false"></vehicle-action>
+    <vehicle-action
+      :vehicleId="vehicle.id"
+      :show="actionModal"
+      :isLoading="isLoading"
+      @closed="actionModal = false"
+      @isLoading="isLoading = true"
+      @isNotLoading="isLoading = false"
+    ></vehicle-action>
     <jet-dialog-modal :show="tokenModal" @close="this.tokenModal = false">
-        <template #title> Token Generado </template>
+      <template #title> Token Generado </template>
 
-        <template #content>
-            <h1>Con el cable LAN del dispositivo conectado a una red, ingrese el token en el servidor web del raspberry en el puerto 8080</h1>
-            {{ token }}
-        </template>
+      <template #content>
+        <h1>
+          Con el cable LAN del dispositivo conectado a una red, ingrese el token
+          en el servidor web del raspberry en el puerto 8080
+        </h1>
+        {{ token }}
+      </template>
 
-        <template #footer>
-          <jet-secondary-button @click="this.tokenModal = false">
-            Cerrar
-          </jet-secondary-button>
-        </template>
-      </jet-dialog-modal>
+      <template #footer>
+        <jet-secondary-button @click="this.tokenModal = false">
+          Cerrar
+        </jet-secondary-button>
+      </template>
+    </jet-dialog-modal>
     <jet-dialog-modal :show="photoModal" @close="this.photoModal = false">
-        <template #title>Imagen - Fecha: {{photoModalImage.added_at}}</template>
+      <template #title>Imagen - Fecha: {{ photoModalImage.added_at }}</template>
 
-        <template #content>
+      <template #content>
+        <img class="rounded shadow-md" :src="photoModalImage.url" alt="" />
+      </template>
 
-            <img
-            class="rounded shadow-md"
-            :src="photoModalImage.url"
-            alt=""
-            />
-        </template>
+      <template #footer>
+        <jet-secondary-button @click.prevent="downloadImage" class="mt-2 mr-2">
+          Descargar
+        </jet-secondary-button>
+        <jet-secondary-button @click="this.photoModal = false">
+          Cerrar
+        </jet-secondary-button>
+      </template>
+    </jet-dialog-modal>
+    <jet-dialog-modal :show="inviteModal" @close="this.inviteModal = false">
+      <template #title> Invitar a alguien a ser dueño </template>
 
-        <template #footer>
-            <jet-secondary-button @click.prevent="downloadImage" class="mt-2 mr-2">
-            Descargar
-          </jet-secondary-button>
-          <jet-secondary-button @click="this.photoModal = false">
-            Cerrar
-          </jet-secondary-button>
-        </template>
-      </jet-dialog-modal>
-      <loading v-model:active="isLoading" :is-full-page="true" />
+      <template #content>
+        <h1>
+          Ingrese el email del usuario que le gustaría invitar a ser dueño
+        </h1>
+        <div class="mt-4">
+          <jet-label for="email" value="Email" />
+          <jet-input
+            id="email"
+            type="email"
+            class="mt-1 block w-full"
+            v-model="inviteForm.email"
+            required
+          />
+        </div>
+        <div class="mt-4">
+          <jet-label for="owner">
+            <div class="flex items-center">
+              <jet-checkbox
+                name="owner"
+                id="owner"
+                v-model:checked="inviteForm.owner"
+              />
+
+              <div class="ml-2">
+                Hacer dueño (puede enviar acciones al dispositivo), de lo contrario solo recibirá notificaciones pero podrá ver las fotos, ubicación y el historial
+              </div>
+            </div>
+          </jet-label>
+        </div>
+        <div class="mt-4">
+            {{ inviteForm.errors}}
+        </div>
+      </template>
+
+      <template #footer>
+        <jet-secondary-button @click="this.invite()" class="mt-2 mr-2">
+          Invitar
+        </jet-secondary-button>
+        <jet-secondary-button @click="this.inviteModal = false">
+          Cerrar
+        </jet-secondary-button>
+      </template>
+    </jet-dialog-modal>
+    <loading v-model:active="isLoading" :is-full-page="true" />
   </app-layout>
 </template>
 
@@ -342,13 +435,15 @@ import "leaflet/dist/leaflet.css";
 import AppLayout from "@/Layouts/AppLayout";
 import JetDialogModal from "@/Jetstream/DialogModal";
 import JetButton from "@/Jetstream/Button";
-import Welcome from "@/Jetstream/Welcome";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton";
 import Toggle from "@/Components/Toggle";
-import axios from 'axios';
-import VehicleAction from '@/Components/VehicleAction';
+import axios from "axios";
+import VehicleAction from "@/Components/VehicleAction";
 import "vue-loading-overlay/dist/vue-loading.css";
 import Loading from "vue-loading-overlay";
+import JetInput from "@/Jetstream/Input";
+import JetLabel from "@/Jetstream/Label";
+import JetCheckbox from "@/Jetstream/Checkbox";
 export default {
   components: {
     AppLayout,
@@ -368,60 +463,69 @@ export default {
     LRectangle,
     LControlAttribution,
     VehicleAction,
-    Loading
+    Loading,
+    JetInput,
+    JetLabel,
+    JetCheckbox,
   },
   props: {
     vehicle: Object,
   },
   data() {
     return {
-        actions: {
-            'photo': {
-                display: "📸 Foto capturada",
-            },
-            'location': {
-                display: "📍 Ubicación obtenida",
-            },
-            'call': {
-                display: "📞 Llamada realizada",
-            },
-            'system_activate': {
-                display: "✅ Sistema activado"
-            },
-            'system_deactivate': {
-                display: "❌  Sistema desactivado"
-            },
-            'buzzer_activate': {
-                display: "🔈 Bocina activada"
-            },
-            'buzzer_deactivate': {
-                display: "🔇 Bocina desactivada"
-            },
-            'power_cut_off_activate': {
-                display: "⚡️ Corta corriente activado"
-            },
-            'power_cut_off_deactivate': {
-                display: "⚡️ Corta corriente desactivado"
-            },
-            'motion': {
-                display: "😮 Movimiento detectado"
-            }
+      actions: {
+        photo: {
+          display: "📸 Foto capturada",
         },
+        location: {
+          display: "📍 Ubicación obtenida",
+        },
+        call: {
+          display: "📞 Llamada realizada",
+        },
+        system_activate: {
+          display: "✅ Sistema activado",
+        },
+        system_deactivate: {
+          display: "❌  Sistema desactivado",
+        },
+        buzzer_activate: {
+          display: "🔈 Bocina activada",
+        },
+        buzzer_deactivate: {
+          display: "🔇 Bocina desactivada",
+        },
+        power_cut_off_activate: {
+          display: "⚡️ Corta corriente activado",
+        },
+        power_cut_off_deactivate: {
+          display: "⚡️ Corta corriente desactivado",
+        },
+        motion: {
+          display: "😮 Movimiento detectado",
+        },
+      },
       actionModal: false,
       tokenModal: false,
       token: "",
       zoom: 19,
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       iconWidth: 25,
       iconHeight: 40,
       photoModal: false,
       photoModalImage: {
-          id: '',
-          url: null,
-          added_at: null,
+        id: "",
+        url: null,
+        added_at: null,
       },
       isLoading: false,
-      actionModal: false,
+      inviteModal: false,
+      inviteForm: {
+        email: "",
+        owner: false,
+        errors: ""
+      },
       history: [
         {
           date: "17-2-2021 21:20hrs",
@@ -444,19 +548,21 @@ export default {
           description: "Ubicación obtenida",
         },
       ],
-      marker: null
+      marker: null,
     };
   },
-  async beforeMount(){
-      const { icon } = await import("leaflet/dist/leaflet-src.esm");
-      this.marker = icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-        });
+  async beforeMount() {
+    const { icon } = await import("leaflet/dist/leaflet-src.esm");
+    this.marker = icon({
+      iconUrl:
+        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    });
   },
   computed: {
     iconUrl() {
@@ -467,20 +573,43 @@ export default {
     },
   },
   methods: {
+    invite() {
+      axios
+        .post(route("vehicle.invite",{ id: this.vehicle.id }),
+          {
+            email: this.inviteForm.email,
+            owner: this.inviteForm.owner,
+          }
+        )
+        .then((response) => {
+            this.inviteModal = false;
+            this.inviteForm.email = "";
+            this.inviteForm.owner = false;
+            this.inviteForm.errors = "";
+        }).catch((error) => {
+            if (error.response){
+                if(error.response.status = 404){
+                    this.inviteForm.errors = "El usuario no existe"
+                }
+            }
+        });
+    },
     closeActionModal() {
       this.actionModal = false;
     },
-    downloadImage(){
-        window.open(this.photoModalImage.url, '_blank')
+    downloadImage() {
+      window.open(this.photoModalImage.url, "_blank");
     },
-    generateToken(){
-        this.isLoading = true;
+    generateToken() {
+      this.isLoading = true;
 
-        axios.post(route('vehicle.apitoken',{id: this.vehicle.id})).then((response) => {
-           this.token = response.data;
-           this.tokenModal = true;
-           this.isLoading = false;
-        })
+      axios
+        .post(route("vehicle.apitoken", { id: this.vehicle.id }))
+        .then((response) => {
+          this.token = response.data;
+          this.tokenModal = true;
+          this.isLoading = false;
+        });
     },
     log(a) {
       console.log(a);
@@ -491,23 +620,26 @@ export default {
         this.iconWidth = Math.floor(this.iconHeight / 2);
       }
     },
-    generateDescription(status){
-        var display = this.actions[status.action].display;
-        if(status.action == 'call'){
-            display = display + ' al '+status.args.phone
-        }
-        return display;
+    generateDescription(status) {
+      var display = this.actions[status.action].display;
+      if (status.action == "call") {
+        display = display + " al " + status.args.phone;
+      }
+      return display;
     },
-    centerMap(status){
-        this.$refs.theMap.leafletObject.panTo([status.statusable.lat,status.statusable.lng]);
-        this.$refs.header.scrollIntoView({behavior: 'smooth'});
-        this.zoom = 19;
+    centerMap(status) {
+      this.$refs.theMap.leafletObject.panTo([
+        status.statusable.lat,
+        status.statusable.lng,
+      ]);
+      this.$refs.header.scrollIntoView({ behavior: "smooth" });
+      this.zoom = 19;
     },
-    showImage(status){
-        this.photoModal = true;
-        console.log(status);
-        this.photoModalImage = status.statusable;
-    }
+    showImage(status) {
+      this.photoModal = true;
+      console.log(status);
+      this.photoModalImage = status.statusable;
+    },
   },
 };
 </script>
