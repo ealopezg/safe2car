@@ -15,7 +15,7 @@ class CreateUserVehicleTable extends Migration
     {
         Schema::create('user_vehicle', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('vehicle_id')->constrained();
             $table->boolean('owner');
             $table->timestamps();

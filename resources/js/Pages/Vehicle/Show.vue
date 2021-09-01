@@ -1,9 +1,72 @@
 <template>
   <app-layout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Vehículo {{ vehicle.license_plate }}
       </h2>
+      <div style="margin-right: auto" v-if="vehicle.owner">
+                  <div class="flex items-center">
+                    <div class="text-lg text-gray-600 leading-7 font-semibold">
+                      Es Dueño
+                    </div>
+                    <svg
+                      class="ml-2 h-8 w-8 text-indigo-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                      />
+                    </svg>
+                  </div>
+                </div> -->
+        <div class="flex items-center">
+                <svg
+                  class="h-8 w-8 text-indigo-500"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" />
+                  <circle cx="7" cy="17" r="2" />
+                  <circle cx="17" cy="17" r="2" />
+                  <path
+                    d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"
+                  />
+                </svg>
+                <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
+                  Vehiculo {{ vehicle.license_plate }}
+                </div>
+                <div style="margin-left: auto" v-if="vehicle.owner">
+                  <div class="flex items-center">
+                    <div class="text-lg text-gray-600 leading-7 font-semibold">
+                      Es Dueño
+                    </div>
+                    <svg
+                      class="ml-2 h-8 w-8 text-indigo-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
     </template>
     <div class="py-12" ref="header">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
