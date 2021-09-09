@@ -175,7 +175,6 @@
                     </jet-secondary-button>
                     <jet-secondary-button
                       @click="this.deleteModal = true"
-                      v-if="this.vehicle.owner"
                     >
                       Borrar
                     </jet-secondary-button>
@@ -488,7 +487,7 @@
 
       <template #content>
         <h1>
-          ¿ Desea borrar su vehículo ?. Puede escoger entre borrar para todos los dueños o solo para usted
+          ¿ Desea borrar su vehículo ?
         </h1>
         <div class="mt-4">
           <jet-label for="owner">
@@ -510,7 +509,7 @@
 
       <template #footer>
         <jet-secondary-button @click="this.delete()" class="mt-2 mr-2">
-          Borrar
+          Borrar vehículo
         </jet-secondary-button>
         <jet-secondary-button @click="this.deleteModal = false">
           Cerrar
