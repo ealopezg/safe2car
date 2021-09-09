@@ -15,7 +15,7 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained();
+            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
             $table->nullableMorphs('statusable');
             $table->string('action');
             $table->string('comment')->nullable();

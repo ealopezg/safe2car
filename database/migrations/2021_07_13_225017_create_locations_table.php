@@ -15,7 +15,7 @@ class CreateLocationsTable extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained();
+            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
             $table->float('latitude');
             $table->float('longitude');
             $table->timestamp('added_at');
