@@ -173,6 +173,12 @@
                     >
                       Invitar a alguien
                     </jet-secondary-button>
+                    <jet-secondary-button
+                      @click="this.deleteModal = true"
+                      v-if="this.vehicle.owner"
+                    >
+                      Borrar
+                    </jet-secondary-button>
                   </div>
                 </div>
               </dl>
@@ -476,6 +482,42 @@
         </jet-secondary-button>
       </template>
     </jet-dialog-modal>
+
+    <jet-dialog-modal :show="deleteModal" @close="this.deleteModal = false">
+      <template #title> Borrar vehículo </template>
+
+      <template #content>
+        <h1>
+          ¿ Desea borrar su vehículo ?. Puede escoger entre borrar para todos los dueños o solo para usted
+        </h1>
+        <div class="mt-4">
+          <jet-label for="owner">
+            <div class="flex items-center">
+              <jet-checkbox
+                name="owner"
+                id="owner"
+                v-model:checked="deleteModalForm.all"
+                v-if="vehicle.owner"
+              />
+
+              <div class="ml-2">
+                Borrar vehículo para todos los dueños
+              </div>
+            </div>
+          </jet-label>
+        </div>
+      </template>
+
+      <template #footer>
+        <jet-secondary-button @click="this.delete()" class="mt-2 mr-2">
+          Borrar
+        </jet-secondary-button>
+        <jet-secondary-button @click="this.deleteModal = false">
+          Cerrar
+        </jet-secondary-button>
+      </template>
+    </jet-dialog-modal>
+
     <loading v-model:active="isLoading" :is-full-page="true" />
   </app-layout>
 </template>
@@ -589,6 +631,10 @@ export default {
         owner: false,
         errors: ""
       },
+      deleteModal: false,
+      deleteModalForm: this.$inertia.form({
+          all: false
+      }),
       history: [
         {
           date: "17-2-2021 21:20hrs",
@@ -655,6 +701,16 @@ export default {
                     this.inviteForm.errors = "El usuario no existe"
                 }
             }
+        });
+    },
+    delete(){
+        this.isLoading = true;
+        this.deleteModalForm.post(this.route("vehicle.delete",{ id: this.vehicle.id }),{
+            onFinish: () => {
+                this.deleteModalForm.reset();
+                this.isLoading = false;
+                this.deleteModal = false;
+                },
         });
     },
     closeActionModal() {

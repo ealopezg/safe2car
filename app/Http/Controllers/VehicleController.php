@@ -180,4 +180,22 @@ class VehicleController extends Controller
         $vehicle->users()->attach($new_owner,['owner'=> $validated['owner']]);
         return response('OK');
     }
+
+
+    public function delete($id,Request $request){
+        $user = $request->user();
+        $vehicle = $user->vehicles()->where('vehicle_id',$id)->firstOrFail();
+        if($request->input('all',false) && $vehicle->pivot->owner){
+            $vehicle->users()->detach();
+            $vehicle->delete();
+        }
+        else{
+            $user->vehicles()->detach($vehicle);
+            if($vehicle->users()->count() == 0){
+                $vehicle->delete();
+            }
+        }
+
+        return Redirect::route('vehicle.index');
+    }
 }
