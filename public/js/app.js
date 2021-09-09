@@ -22973,10 +22973,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           display: "🔇 Bocina desactivada"
         },
         power_cut_off_activate: {
-          display: "⚡️ Corta corriente activado"
+          display: "⚡️ Corta bencina activado"
         },
         power_cut_off_deactivate: {
-          display: "⚡️ Corta corriente desactivado"
+          display: "⚡️ Corta bencina desactivado"
         },
         motion: {
           display: "😮 Movimiento detectado"
@@ -23233,7 +23233,7 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
   id: "toggle-label"
-}, " Corta Corriente", -1
+}, " Corta Bencina", -1
 /* HOISTED */
 );
 
@@ -29958,7 +29958,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/phone-call.svg?dff2da0e58b2c6be57878138417bf25a");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/phone-call.svg?b214b774ed702cf239a3f6be8511cf24");
 
 /***/ }),
 

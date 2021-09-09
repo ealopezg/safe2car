@@ -30,7 +30,7 @@
                 v-model="power_cut_off"
                 @change="clickAction('power_cut_off', true, power_cut_off)"
               />
-              <label id="toggle-label"> Corta Corriente</label>
+              <label id="toggle-label"> Corta Bencina</label>
             </div>
           </div>
           <div

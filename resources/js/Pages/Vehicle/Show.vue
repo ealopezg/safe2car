@@ -559,10 +559,10 @@ export default {
           display: "🔇 Bocina desactivada",
         },
         power_cut_off_activate: {
-          display: "⚡️ Corta corriente activado",
+          display: "⚡️ Corta bencina activado",
         },
         power_cut_off_deactivate: {
-          display: "⚡️ Corta corriente desactivado",
+          display: "⚡️ Corta bencina desactivado",
         },
         motion: {
           display: "😮 Movimiento detectado",
